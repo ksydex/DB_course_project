@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ContractAndProjectManager.Data;
+using ContractAndProjectManager.Infrastructure.ServiceConfigurations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,14 +26,19 @@ namespace ContractAndProjectManager
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.ConfigureHelperServices()
+                .AddControllersWithViews();
+
             services.AddDbContext<ApplicationContext>(options =>
-            {
-                var connect = Configuration.GetConnectionString("Default");
-                options.UseNpgsql(connect);
-            });
+                {
+                    var connect = Configuration.GetConnectionString("Default");
+                    options.UseNpgsql(connect);
+                    options.UseLazyLoadingProxies();
+                    //options.EnableSensitiveDataLogging();
+                })
+                .ConfigureAuthService(Configuration);
         }
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -44,16 +50,21 @@ namespace ContractAndProjectManager
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "Auth",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "Admin",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");

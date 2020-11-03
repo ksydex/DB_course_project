@@ -17,9 +17,7 @@ namespace ContractAndProjectManager.Entities
         
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
-        
-        public virtual List<Request> Requests { get; set; }
-        
+
         public int StatusId { get; set; }
         public virtual Status Status { get; set; }
 

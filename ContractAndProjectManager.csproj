@@ -5,11 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Auth" />
-    <Folder Include="Areas\Contract" />
+    <Folder Include="Areas\Contract\Controllers" />
+    <Folder Include="Areas\Contract\Views" />
     <Folder Include="Extensions" />
-    <Folder Include="Infrastructure\EntityConfigurations" />
-    <Folder Include="Infrastructure\ServiceConfigurations" />
   </ItemGroup>
 
   <ItemGroup>

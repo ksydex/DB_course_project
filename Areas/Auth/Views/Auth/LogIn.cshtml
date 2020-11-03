@@ -1,0 +1,14 @@
+﻿@model LogInModel
+
+<form  asp-area="Auth" asp-controller="Auth" asp-action="LogIn" asp-antiforgery="true" class="form-signin" style="max-width: 500px; margin: 0 auto">
+
+    <h1 class="h3 mb-3 font-weight-normal" style="text-align: center">Вход</h1>
+    <input asp-for="Email" type="email"  class="form-control mb-2" placeholder="Email" required="" autofocus="">
+    <input asp-for="Password" type="password" class="form-control mb-2" placeholder="Пароль" required="">
+    @Html.ValidationSummary(false, "", new {@class = "text-danger"})
+    <input value="Войти" class="btn btn-success btn-block" type="submit"/> 
+    <hr>
+    <a asp-area="Auth" asp-controller="Auth" asp-action="SignUp">
+        <button class="btn btn-primary btn-block" type="button" id="btn-signup">Зарегистрироваться</button>
+    </a>
+</form>

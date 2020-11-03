@@ -6,7 +6,7 @@ using ContractAndProjectManager.Infrastructure.Interfaces;
 
 namespace ContractAndProjectManager.Models
 {
-    public abstract class User : IWithDateCreated
+    public class User : IWithDateCreated
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -22,7 +22,7 @@ namespace ContractAndProjectManager.Models
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
 
-        protected User()
+        public User()
         {
             DateCreated = DateTime.UtcNow;
         }

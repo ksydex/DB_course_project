@@ -1,4 +1,5 @@
 ﻿using ContractAndProjectManager.Entities;
+using ContractAndProjectManager.Infrastructure.EntityConfigurations;
 using ContractAndProjectManager.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,11 +34,16 @@ namespace ContractAndProjectManager.Data
         
         public ApplicationContext(DbContextOptions options) : base(options)
         {
+            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            
+            modelBuilder.ApplyConfiguration(new RequestStatusEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TaskStatusEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleEntityConfiguration());
         }
     }
 }
