@@ -12,29 +12,24 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Проектная деятельность</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css"/>
+    <link href="~/lib/Primer/primer.css" rel="stylesheet" />
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Проектная деятельность</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <nav class="border-sm-bottom box-shadow-medium mb-3">
+        <div class="d-flex mx-auto flex-items-center px-2" style="max-width: 1280px; height: 50px">
+            <a class="h3 text-gray-dark" asp-area="Project" asp-controller="Home" asp-action="Index" style="white-space: nowrap">Проектная деятельность</a>
 
-
-            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                <ul class="navbar-nav flex-grow-1">
+            <div class="d-flex ml-3 width-full">
+                <ul class="d-flex list-style-none flex-items-center width-full">
                     @if (isAuthenticated)
                     {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Категория</a>
+                        <li>
+                            <a class="nav-link text-blue" asp-area="" asp-controller="Home" asp-action="Index">Категория</a>
                         </li>
                         
-                        <li class="ml-auto nav-item flex-row align-items-center">
+                        <li class="d-flex flex-items-center"  style="margin-left: auto">
                             <a class="text text-info mr-3">@UserService.User.Email</a>
                             <a class="text-dark" asp-area="Auth" asp-controller="Auth" asp-action="LogOut">
                                 <button class="btn btn-light">Выход</button>
@@ -43,8 +38,8 @@
                     }
                     else
                     {
-                        <li class="nav-item ml-auto">
-                            <a class="nav-link text text-danger">Не авторизован</a>
+                        <li class="nav-item ml-auto"  style="margin-left: auto">
+                            <a class="nav-link text text-red">Не авторизованы</a>
                         </li>
                     }
                 </ul>
@@ -53,7 +48,7 @@
     </nav>
 </header>
 <div class="container">
-    <main role="main" class="pb-3">
+    <main role="main" class="pb-3 px-2 mx-auto" style="max-width: 1280px">
         @RenderBody()
     </main>
 </div>

@@ -20,7 +20,6 @@ namespace ContractAndProjectManager.Data
         public DbSet<EmployeeTeam> EmployeesTeams { get; set; }
 
         public DbSet<Request> Requests { get; set; }
-        public DbSet<RequestStatus> RequestStatuses { get; set; }
         
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<ContractStage> ContractStages { get; set; }
@@ -29,10 +28,13 @@ namespace ContractAndProjectManager.Data
         public DbSet<ProjectStage> ProjectStages { get; set; }
         
         public DbSet<Task> Tasks { get; set; }
-        public DbSet<TaskStatus> TaskStatuses { get; set; }
-        
+
         public DbSet<Status> Statuses { get; set; }
-        
+        public DbSet<TaskStatus> TaskStatuses { get; set; }
+        public DbSet<ProjectStatus> ProjectStatuses { get; set; }
+        public DbSet<RequestStatus> RequestStatuses { get; set; }
+        public DbSet<ContractStatus> ContractStatuses { get; set; }
+
         public ApplicationContext(DbContextOptions options) : base(options)
         {
             

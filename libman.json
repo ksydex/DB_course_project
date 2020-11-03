@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "Primer@15.2.0",
+      "destination": "wwwroot/lib/Primer/",
+      "files": [
+        "primer.css"
+      ]
+    }
+  ]
+}
