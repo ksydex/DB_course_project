@@ -6,15 +6,18 @@ using ContractAndProjectManager.Models;
 
 namespace ContractAndProjectManager.Entities
 {
-    public class Request : IWithDateCreated
+    public class Request : IWithDateCreated, IWithTitleDescription
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
         public string Description { get; set; }
+        
+        public double Price { get; set; }
+        public DateTime DateDeadLine { get; set; }
 
         public DateTime DateCreated { get; set; }
-        
+
         public int CustomerId { get; set; }
         public virtual Customer Customer { get; set; }
 

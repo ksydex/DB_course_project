@@ -4,7 +4,7 @@ using ContractAndProjectManager.Infrastructure.Interfaces;
 
 namespace ContractAndProjectManager.Entities
 {
-    public class ProjectStage : IWithDateCreated
+    public class ProjectStage : IWithDateCreated, IWithRecordDates
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -12,8 +12,10 @@ namespace ContractAndProjectManager.Entities
         public string Description { get; set; }
 
         public DateTime DateCreated { get; set; }
+        
         public DateTime DateStart { get; set; }
         public DateTime DateDeadLine { get; set; }
+        public DateTime DateEnd { get; set; }
 
         public int ProjectId { get; set; }
         public virtual Project Project { get; set; }

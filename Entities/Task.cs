@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using ContractAndProjectManager.Infrastructure.Interfaces;
 
 namespace ContractAndProjectManager.Entities
 {
-    public class Task
+    public class Task : IWithDateCreated, IWithRecordDates, IWithTitleDescription
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -17,7 +18,10 @@ namespace ContractAndProjectManager.Entities
         public virtual List<Task> Tasks { get; set; }
         
         public DateTime DateCreated { get; set; }
+        
+        public DateTime DateStart { get; set; }
         public DateTime DateDeadLine { get; set; }
+        public DateTime DateEnd { get; set; }
 
         public int? ExecutorId { get; set; }
         public virtual Employee Executor { get; set; } 

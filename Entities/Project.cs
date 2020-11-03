@@ -13,6 +13,8 @@ namespace ContractAndProjectManager.Entities
         public string Description { get; set; }
 
         public DateTime DateCreated { get; set; }
+        public DateTime DateStart { get; set; }
+        public DateTime DateEnd { get; set; }
         
         public int ContractId { get; set; }
         public virtual Contract Contract { get; set; }

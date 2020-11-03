@@ -4,11 +4,12 @@ using ContractAndProjectManager.Infrastructure.Interfaces;
 
 namespace ContractAndProjectManager.Entities
 {
-    public class ContractStage : IWithDateCreated
+    public class ContractStage : IWithDateCreated, IWithTitleDescription
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
+        public string Description { get; set; }
 
         public DateTime DateCreated { get; set; }
 

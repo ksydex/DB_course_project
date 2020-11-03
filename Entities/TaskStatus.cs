@@ -7,19 +7,22 @@ namespace ContractAndProjectManager.Entities
         public static TaskStatus Pending = new TaskStatus
         {
             Id = 4,
-            Name = "К выполнению"
+            Name = "К выполнению",
+            Color = "#dfe1e6"
         };
         
         public static TaskStatus Developing = new TaskStatus
         {
             Id = 5,
-            Name = "В работе"
+            Name = "В работе",
+            Color = "#0052cc"
         };
 
         public static TaskStatus Completed = new TaskStatus
         {
             Id = 6,
-            Name = "Готово"
+            Name = "Готово",
+            Color = "#36b37e"
         };
     }
 }
