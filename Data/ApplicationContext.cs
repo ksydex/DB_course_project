@@ -1,4 +1,5 @@
 ﻿using ContractAndProjectManager.Entities;
+using ContractAndProjectManager.Extensions;
 using ContractAndProjectManager.Infrastructure.EntityConfigurations;
 using ContractAndProjectManager.Models;
 using Microsoft.EntityFrameworkCore;
@@ -41,8 +42,7 @@ namespace ContractAndProjectManager.Data
         {
             base.OnModelCreating(modelBuilder);
             
-            modelBuilder.ApplyConfiguration(new RequestStatusEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new TaskStatusEntityConfiguration());
+            modelBuilder.ConfigureStatusEntities();
             modelBuilder.ApplyConfiguration(new RoleEntityConfiguration());
         }
     }

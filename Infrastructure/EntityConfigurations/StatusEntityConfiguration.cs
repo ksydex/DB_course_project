@@ -32,4 +32,31 @@ namespace ContractAndProjectManager.Infrastructure.EntityConfigurations
             });
         }
     }
+    
+    public class ProjectStatusEntityConfiguration : IEntityTypeConfiguration<ProjectStatus>
+    {
+        public void Configure(EntityTypeBuilder<ProjectStatus> builder)
+        {
+            builder.HasData(new List<ProjectStatus>
+            {
+                ProjectStatus.Completed,
+                ProjectStatus.Active,
+                ProjectStatus.Denied
+            });
+        }
+    }
+    
+    public class ContractStatusEntityConfiguration : IEntityTypeConfiguration<ContractStatus>
+    {
+        public void Configure(EntityTypeBuilder<ContractStatus> builder)
+        {
+            builder.HasData(new List<ContractStatus>
+            {
+                ContractStatus.Completed,
+                ContractStatus.Developing,
+                ContractStatus.Denied,
+                ContractStatus.Pending
+            });
+        }
+    }
 }

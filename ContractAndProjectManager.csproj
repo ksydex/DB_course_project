@@ -7,7 +7,6 @@
   <ItemGroup>
     <Folder Include="Areas\Contract\Controllers" />
     <Folder Include="Areas\Contract\Views" />
-    <Folder Include="Extensions" />
   </ItemGroup>
 
   <ItemGroup>
