@@ -1,4 +1,5 @@
-﻿using ContractAndProjectManager.Models;
+﻿using ContractAndProjectManager.Infrastructure.AbstractClasses;
+using ContractAndProjectManager.Models;
 
 namespace ContractAndProjectManager.Entities
 {
@@ -25,4 +26,6 @@ namespace ContractAndProjectManager.Entities
             Color = "#36b37e"
         };
     }
+    
+    public class TaskStatusHistory : StatusHistory<TaskStatus, Task> {}
 }

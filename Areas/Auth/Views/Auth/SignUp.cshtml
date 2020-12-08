@@ -14,8 +14,8 @@
         @Html.ValidationMessageFor(model => model.Name)
     </div>
 
-    <div class="mb-2 d-flex">
-        <label asp-for="RoleId" class="control-label mr-2">Роль</label>
+    <div class="mb-2 d-flex align-center">
+        <label asp-for="RoleId" class="control-label mr-2" style="line-height: 2.3">Роль</label>
         <select asp-for="RoleId" class="form-control" style="width: 100%" asp-items="ViewBag.Roles"></select>
         @Html.ValidationMessageFor(model => model.RoleId)
     </div>
@@ -23,8 +23,7 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     
     <input  class="btn btn-success btn-block" type="submit" value="Зарегистрироваться"/>
-    <hr>
-    <a asp-area="Auth" asp-controller="Auth" asp-action="LogIn">
+    <a class="mt-2" asp-area="Auth" asp-controller="Auth" asp-action="LogIn">
             <button class="btn btn-primary btn-block" type="button" id="btn-signup">Назад к входу</button>
         </a>
 </form>

@@ -14,7 +14,8 @@ namespace ContractAndProjectManager.Infrastructure.ServiceConfigurations
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(opts =>
                 {
-                    opts.LoginPath = new PathString("/auth/auth/login");
+                    opts.LoginPath = new PathString("/");
+                    opts.AccessDeniedPath = new PathString("/");
                 });
             return services;
         }

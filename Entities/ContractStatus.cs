@@ -1,4 +1,5 @@
-﻿using ContractAndProjectManager.Models;
+﻿using ContractAndProjectManager.Infrastructure.AbstractClasses;
+using ContractAndProjectManager.Models;
 
 namespace ContractAndProjectManager.Entities
 {
@@ -9,7 +10,7 @@ namespace ContractAndProjectManager.Entities
             Id = 8,
             Name = "Ожидание работ"
         };
-        
+
         public static ContractStatus Developing = new ContractStatus
         {
             Id = 9,
@@ -28,4 +29,6 @@ namespace ContractAndProjectManager.Entities
             Name = "Отклонён"
         };
     }
+    
+    public class ContractStatusHistory : StatusHistory<ContractStatus, Contract> {}
 }

@@ -4,8 +4,8 @@ namespace ContractAndProjectManager.Infrastructure.Interfaces
 {
     public interface IWithRecordDates
     {
-        public DateTime DateStart { get; set; }
-        public DateTime DateDeadLine { get; }
-        public DateTime DateEnd { get; set; }
+        public DateTime? DateStart { get; }
+        public DateTime? DateDeadLine { get; }
+        public DateTime? DateEnd { get; }
     }
 }

@@ -3,7 +3,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ContractAndProjectManager.Areas.Auth.Models;
 using ContractAndProjectManager.Data;
-using ContractAndProjectManager.Entities;
 using ContractAndProjectManager.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;

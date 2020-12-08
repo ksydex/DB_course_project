@@ -21,6 +21,9 @@ namespace ContractAndProjectManager.Models
 
         public int RoleId { get; set; }
         public virtual Role Role { get; set; }
+        
+        public int? TeamId { get; set; }
+        public virtual Team Team { get; set; }
 
         public User()
         {

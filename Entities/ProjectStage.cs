@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using ContractAndProjectManager.Infrastructure.Interfaces;
 
@@ -12,19 +13,21 @@ namespace ContractAndProjectManager.Entities
         public string Description { get; set; }
 
         public DateTime DateCreated { get; set; }
-        
-        public DateTime DateStart { get; set; }
-        public DateTime DateDeadLine { get; set; }
-        public DateTime DateEnd { get; set; }
+
+        public DateTime? DateStart => ContractStage.DateStart;
+        public DateTime? DateDeadLine => ContractStage.DateDeadLine;
+        public DateTime? DateEnd => ContractStage.DateEnd;
 
         public int ProjectId { get; set; }
         public virtual Project Project { get; set; }
-        
-        public int TeamLeadId { get; set; }
-        public virtual TeamLead TeamLead { get; set; }
-        
+
         public int? ExecutorId { get; set; }
         public virtual Employee Executor { get; set; } 
+        
+        public virtual List<Task> Tasks { get; set; }
+        
+        public int ContractStageId { get; set; }
+        public virtual ContractStage ContractStage { get; set; }
 
         public ProjectStage()
         {

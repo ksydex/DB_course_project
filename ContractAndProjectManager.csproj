@@ -5,17 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Contract\Controllers" />
-    <Folder Include="Areas\Contract\Views" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.9">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
   </ItemGroup>
 
@@ -41,6 +37,11 @@
     <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js" />
     <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map" />
     <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\LICENSE" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Request\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Request\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Request\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Request\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Request\Index.cshtml" />
   </ItemGroup>
 
 </Project>

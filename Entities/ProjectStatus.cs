@@ -1,4 +1,5 @@
-﻿using ContractAndProjectManager.Models;
+﻿using ContractAndProjectManager.Infrastructure.AbstractClasses;
+using ContractAndProjectManager.Models;
 
 namespace ContractAndProjectManager.Entities
 {
@@ -6,7 +7,7 @@ namespace ContractAndProjectManager.Entities
     {
         public static ProjectStatus Active = new ProjectStatus
         {
-            Id = 12,
+            Id = 2,
             Name = "Активный проект",
             Color = "#0052cc"
         };
@@ -25,4 +26,6 @@ namespace ContractAndProjectManager.Entities
             Color = "#d04437"
         };
     }
+    
+    public class ProjectStatusHistory: StatusHistory<ProjectStatus, Project> {}
 }

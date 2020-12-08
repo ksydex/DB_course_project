@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ContractAndProjectManager.Entities;
-using ContractAndProjectManager.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,7 +13,6 @@ namespace ContractAndProjectManager.Infrastructure.EntityConfigurations
             {
                 RequestStatus.Completed,
                 RequestStatus.Denied,
-                RequestStatus.Developing,
                 RequestStatus.Pending,
             });
         }

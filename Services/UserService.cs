@@ -9,6 +9,8 @@ using ContractAndProjectManager.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
+using TaskStatus = System.Threading.Tasks.TaskStatus;
 
 namespace ContractAndProjectManager.Services
 {
@@ -45,23 +47,15 @@ namespace ContractAndProjectManager.Services
         {
             if (await _db.Users.AnyAsync(x => x.Email == model.Email))
                 return null;
-            
+
             try
             {
                 var role = await _db.Roles.FirstOrDefaultAsync(x => x.Id == model.RoleId);
                 if (role == null)
-                    throw new Exception();
-                
-                // var user = new User
-                // {
-                //     Email = model.Email,
-                //     Name = model.Name,
-                //     RoleId = role.Id,
-                // };
-                // user.Password = _passwordService.HashPassword(user, model.Password);
+                    return null;
 
                 User user;
-                
+
                 if (role.Id == Role.Customer.Id)
                     user = new Customer();
                 else if (role.Id == Role.Employee.Id)
@@ -70,23 +64,24 @@ namespace ContractAndProjectManager.Services
                     user = new TeamLead();
                 else if (role.Id == Role.Planner.Id)
                     user = new Planner();
-                else 
-                    throw new Exception();
+                else
+                    return null;
 
                 user.Email = model.Email;
                 user.Name = model.Name;
                 user.RoleId = role.Id;
                 user.Password = _passwordService.HashPassword(user, model.Password);
-                
-                await _db.Users.AddAsync(user);
+
+                await _db.AddAsync(user);
+
                 await _db.SaveChangesAsync();
                 
-                await _db.SaveChangesAsync();
+                
                 return user;
             }
             catch (Exception)
             {
-                throw new Exception();
+                return null;
             }
         }
     }

@@ -6,8 +6,7 @@
     <input asp-for="Email" type="email"  class="form-control mb-2" placeholder="Email" required="" autofocus="">
     <input asp-for="Password" type="password" class="form-control mb-2" placeholder="Пароль" required="">
     <input value="Войти" class="btn btn-success btn-block" type="submit"/>
-    @Html.ValidationSummary(false, "", new {@class = "text text-red"})
-    <hr class="hr">
+    @Html.ValidationSummary(false, "", new {@class = "text text-danger"})
     <a asp-area="Auth" asp-controller="Auth" asp-action="SignUp">
         <button class="btn btn-primary btn-block" type="button" id="btn-signup">Зарегистрироваться</button>
     </a>

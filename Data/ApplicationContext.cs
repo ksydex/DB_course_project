@@ -17,7 +17,6 @@ namespace ContractAndProjectManager.Data
         public DbSet<Role> Roles { get; set; }
         
         public DbSet<Team> Teams { get; set; }
-        public DbSet<EmployeeTeam> EmployeesTeams { get; set; }
 
         public DbSet<Request> Requests { get; set; }
         
@@ -34,6 +33,10 @@ namespace ContractAndProjectManager.Data
         public DbSet<ProjectStatus> ProjectStatuses { get; set; }
         public DbSet<RequestStatus> RequestStatuses { get; set; }
         public DbSet<ContractStatus> ContractStatuses { get; set; }
+        public DbSet<RequestStatusHistory> RequestStatusHistories { set; get; }
+        public DbSet<ContractStatusHistory> ContractStatusHistories { get; set; }
+        public DbSet<ProjectStatusHistory> ProjectStatusHistories { get; set; }
+        public DbSet<TaskStatusHistory> TaskStatusHistories { get; set; }
 
         public ApplicationContext(DbContextOptions options) : base(options)
         {

@@ -1,20 +1,17 @@
-﻿using ContractAndProjectManager.Models;
+﻿using ContractAndProjectManager.Infrastructure.AbstractClasses;
+using ContractAndProjectManager.Models;
 
 namespace ContractAndProjectManager.Entities
 {
     public class RequestStatus : Status
+    
     {
         public static RequestStatus Pending = new RequestStatus
         {
             Id = 1,
             Name = "В обработке"
         };
-
-        public static RequestStatus Developing = new RequestStatus
-        {
-            Id = 2,
-            Name = "В разработке"
-        };
+        
 
         public static RequestStatus Denied = new RequestStatus
         {
@@ -28,4 +25,6 @@ namespace ContractAndProjectManager.Entities
             Name = "Завершен"
         };
     }
+    
+    public class RequestStatusHistory: StatusHistory<RequestStatus, Request> {}
 }

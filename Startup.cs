@@ -27,16 +27,15 @@ namespace ContractAndProjectManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureHelperServices()
+                .ConfigureAuthService(Configuration)
                 .AddControllersWithViews();
 
             services.AddDbContext<ApplicationContext>(options =>
-                {
-                    var connect = Configuration.GetConnectionString("Default");
-                    options.UseNpgsql(connect);
-                    options.UseLazyLoadingProxies();
-                    //options.EnableSensitiveDataLogging();
-                })
-                .ConfigureAuthService(Configuration);
+            {
+                var connect = Configuration.GetConnectionString("Default");
+                options.UseNpgsql(connect);
+                options.UseLazyLoadingProxies();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -53,9 +52,11 @@ namespace ContractAndProjectManager
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
 
+            
             app.UseAuthentication();
             app.UseAuthorization();
 
