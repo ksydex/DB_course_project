@@ -12,6 +12,12 @@ namespace ContractAndProjectManager.Entities
             Name = "В обработке"
         };
         
+        public static RequestStatus InWork = new RequestStatus
+        {
+            Id = 15,
+            Name = "В работе"
+        };
+        
 
         public static RequestStatus Denied = new RequestStatus
         {

@@ -93,3 +93,7 @@ button > a:hover {
     color: white;
     text-decoration: none !important;
 }
+
+.table th {
+    font-weight: 400;
+}

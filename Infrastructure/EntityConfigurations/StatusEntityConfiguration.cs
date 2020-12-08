@@ -14,6 +14,7 @@ namespace ContractAndProjectManager.Infrastructure.EntityConfigurations
                 RequestStatus.Completed,
                 RequestStatus.Denied,
                 RequestStatus.Pending,
+                RequestStatus.InWork
             });
         }
     }
@@ -25,7 +26,7 @@ namespace ContractAndProjectManager.Infrastructure.EntityConfigurations
             builder.HasData(new List<TaskStatus>
             {
                 TaskStatus.Completed,
-                TaskStatus.Developing,
+                TaskStatus.InWork,
                 TaskStatus.Pending
             });
         }
@@ -51,7 +52,7 @@ namespace ContractAndProjectManager.Infrastructure.EntityConfigurations
             builder.HasData(new List<ContractStatus>
             {
                 ContractStatus.Completed,
-                ContractStatus.Developing,
+                ContractStatus.InWork,
                 ContractStatus.Denied,
                 ContractStatus.Pending
             });

@@ -26,7 +26,7 @@ namespace ContractAndProjectManager.Entities
         public virtual List<ProjectStage> Stages { get; set; }
 
         [NotMapped]
-        public ProjectStatusHistory Status => StatusHistory.OrderByDescending(x => x.Id)
+        public ProjectStatusHistory Status => StatusHistory?.OrderByDescending(x => x.Id)
             .FirstOrDefault();
         public virtual List<ProjectStatusHistory> StatusHistory { get; set; }
 

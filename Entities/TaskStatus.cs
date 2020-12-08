@@ -12,7 +12,7 @@ namespace ContractAndProjectManager.Entities
             Color = "#dfe1e6"
         };
         
-        public static TaskStatus Developing = new TaskStatus
+        public static TaskStatus InWork = new TaskStatus
         {
             Id = 5,
             Name = "В работе",

@@ -25,7 +25,7 @@ namespace ContractAndProjectManager.Entities
         public virtual Request Request { get; set; }
 
         [NotMapped]
-        public ContractStatusHistory Status => StatusHistory.OrderByDescending(x => x.Id)
+        public ContractStatusHistory Status => StatusHistory?.OrderByDescending(x => x.Id)
             .FirstOrDefault();
 
         public virtual List<ContractStatusHistory> StatusHistory { get; set; }

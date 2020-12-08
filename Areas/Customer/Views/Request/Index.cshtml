@@ -3,47 +3,44 @@
 @{
     ViewData["Title"] = "Заявки";
 }
+<div class="d-flex justify-content-between align-items-center">
 
-<p>
-    <button class="btn btn-primary">
-        <a asp-action="Create">Добавить заявку</a>
-    </button>
-</p>
+    <h4>Мои заявки</h4>
+    <p>
+        <button class="btn btn-primary">
+            <a asp-action="Create">Добавить заявку</a>
+        </button>
+    </p>
+
+</div>
+
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateDeadLine)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            Заголовок
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateDeadLine)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateCreated)
+        </th>
+        <th>
+            Статус
+        </th>
+        <th>
+            Договор
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DateDeadLine)
@@ -52,11 +49,24 @@
                 @Html.DisplayFor(modelItem => item.DateCreated)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Status.Status.Name)
+            </td>
+            <td>
+                @if (item.Contract != null)
+                {
+                    <a>Перейти</a>  @* TODO: add url *@
+                }
+                else
+                {
+                    <span>-</span>
+                }
+            </td>
+            <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

@@ -61,15 +61,24 @@ namespace ContractAndProjectManager.Areas.Customer.Controllers
         // POST: Request/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,DateDeadLine,DateCreated,CustomerId")] Request request)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,Price,DateDeadLine")] Request request)
         {
             if (ModelState.IsValid)
             {
+                request.CustomerId = _userService.UserId;
                 _db.Add(request);
                 await _db.SaveChangesAsync();
+
+                await _db.RequestStatusHistories.AddAsync(new RequestStatusHistory
+                {
+                    EntityId = request.Id,
+                    StatusId = RequestStatus.Pending.Id
+                });
+                
+                await _db.SaveChangesAsync();
+                
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_db.Customers, "Id", "Discriminator", request.CustomerId);
             return View(request);
         }
 
@@ -86,14 +95,13 @@ namespace ContractAndProjectManager.Areas.Customer.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_db.Customers, "Id", "Discriminator", request.CustomerId);
             return View(request);
         }
 
         // POST: Request/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,DateDeadLine")] Request request)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,Price,DateDeadLine,CustomerId")] Request request)
         {
             if (id != request.Id)
             {
@@ -120,7 +128,6 @@ namespace ContractAndProjectManager.Areas.Customer.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_db.Customers, "Id", "Discriminator", request.CustomerId);
             return View(request);
         }
 

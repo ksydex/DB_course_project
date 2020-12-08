@@ -11,7 +11,7 @@ namespace ContractAndProjectManager.Entities
             Name = "Ожидание работ"
         };
 
-        public static ContractStatus Developing = new ContractStatus
+        public static ContractStatus InWork = new ContractStatus
         {
             Id = 9,
             Name = "В работе"
