@@ -26,9 +26,18 @@ namespace ContractAndProjectManager.Areas.Customer.Controllers
         }
 
         // GET: Request
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] int statusId = 0)
         {
-            var applicationContext = _db.Requests.Include(r => r.Customer);
+            var iQ = _db.Requests.Where(x => x.CustomerId == _userService.UserId);
+            var applicationContext = statusId == 0
+                ? iQ.OrderByDescending(x => x.Id)
+                : iQ
+                    .Where(x => x.StatusHistory
+                        .OrderByDescending(y => y.Id)
+                        .Take(1).FirstOrDefault().StatusId == statusId);
+
+            ViewData["statusId"] = statusId;
+
             return View(await applicationContext.ToListAsync());
         }
 

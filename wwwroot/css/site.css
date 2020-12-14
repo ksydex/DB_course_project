@@ -1,4 +1,11 @@
-﻿* {
+﻿:root {
+    --indent-1: 6px;
+    --indent-2: 12px;
+    --indent-3: 20px;
+    --indent-4: 40px;
+}
+
+* {
     font-family: 'Fira Sans', sans-serif;
     transition: 0.3s all;
 }
@@ -96,4 +103,24 @@ button > a:hover {
 
 .table th {
     font-weight: 400;
+}
+
+.grid-default {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25px, max-content));
+    grid-template-rows: repeat(auto-fit, minmax(25px, max-content));
+    grid-gap: var(--indent-2);
+}
+
+.grid-default-2 {
+    grid-gap: var(--indent-3);
+}
+
+.grid-default-3 {
+    grid-gap: var(--indent-4);
+}
+
+.white-space-no-wrap {
+    overflow: hidden;
+    white-space: nowrap;
 }

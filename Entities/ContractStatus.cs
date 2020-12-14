@@ -8,25 +8,29 @@ namespace ContractAndProjectManager.Entities
         public static ContractStatus Pending = new ContractStatus
         {
             Id = 8,
-            Name = "Ожидание работ"
+            Name = "Ожидание работ",
+            Color = "#ffc107"
         };
 
         public static ContractStatus InWork = new ContractStatus
         {
             Id = 9,
-            Name = "В работе"
+            Name = "В работе",
+            Color = "#0052cc"
         };
 
         public static ContractStatus Completed = new ContractStatus
         {
             Id = 10,
-            Name = "Завершен"
+            Name = "Завершен",
+            Color = "#36b37e"
         };
 
         public static ContractStatus Denied = new ContractStatus
         {
             Id = 11,
-            Name = "Отклонён"
+            Name = "Отклонён",
+            Color = "#dc3545"
         };
     }
     

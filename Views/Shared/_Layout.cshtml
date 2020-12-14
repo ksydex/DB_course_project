@@ -4,11 +4,12 @@
 @inject UserService UserService;
 
 @{
-    var user = Context.User;
     var isAuthenticated = Context.User?.Identity.IsAuthenticated ?? false;
-    var b = new RouteValue { Area = "Auth", Controller = "Home" };
-    var baseUrlValues = UserService.User != null ? Role.All.FirstOrDefault(x => x.Id == UserService.User.RoleId)?.LogInRouteValues ?? b :
-        b;
+    var user = isAuthenticated ? UserService.User : null;
+    var bDefault = new RouteValue { Area = "Auth", Controller = "Home" };
+    var baseUrlValues = user != null ? Role.All.FirstOrDefault(x => x.Id == UserService.User.RoleId)?.LogInRouteValues ?? bDefault :
+        bDefault;
+
 }
 
 <!DOCTYPE html>
@@ -19,14 +20,15 @@
     <title>@ViewData["Title"] - Проектная деятельность</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="~/css/site.css"/>
+    <link rel="stylesheet" href="~/css/reset.css"/>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/site.css"/>
 </head>
 <body>
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
         <div class="container">
-            <a asp-area="@baseUrlValues?.Area" asp-controller="@baseUrlValues?.Controller" asp-action="Index" class="navbar-brand">Проектная деятельность</a>
+            <a asp-area="@baseUrlValues?.Area" asp-controller="@baseUrlValues.Controller" asp-action="Index" class="navbar-brand">Проектная деятельность</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -35,8 +37,9 @@
                 <ul class="navbar-nav flex-grow-1">
                     @if (isAuthenticated)
                     {
-                        <li class="d-flex flex-items-center" style="margin-left: auto">
-                            <p class="text text-info m-0 mr-3" style="line-height: 2.5">@UserService.User.Email</p>
+                        <li class="d-flex flex-items-center mt-2 mt-md-0" style="margin-left: auto">
+                            <p class="text text-info m-0 mr-3" style="line-height: 2.5">@user?.Name</p>
+
                             <a asp-area="Auth" asp-controller="Auth" asp-action="LogOut">
                                 <button class="btn btn-light">Выход</button>
                             </a>
@@ -44,7 +47,7 @@
                     }
                     else
                     {
-                        <li class="nav-item ml-auto" style="margin-left: auto">
+                        <li class="nav-item ml-auto mt-2 mt-md-0" style="margin-left: auto">
                             <a class="nav-link text text-red">Не авторизованы</a>
                         </li>
                     }

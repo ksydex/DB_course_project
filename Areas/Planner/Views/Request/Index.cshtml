@@ -16,9 +16,6 @@
 }
 <div class="d-flex justify-content-between align-items-center">
     <h4>Заявки</h4>
-    <button class="btn btn-primary">
-        <a asp-action="Create">Добавить заявку</a>
-    </button>
 </div>
 
 <div class="grid-default grid-default-2 mb-3">
@@ -27,7 +24,7 @@
     {
         var isCurrent = currentStatusId == item.Id;
         <button class="btn p-1 px-2" style="background: @(isCurrent ? item.Color : "none")">
-            <a asp-area="Customer" asp-controller="Request" asp-action="Index" asp-route-statusId="@item.Id" class="text" style="color: @(isCurrent ? "white" : item.Color)">@item.Name</a>
+            <a asp-area="Planner" asp-controller="Request" asp-action="Index" asp-route-statusId="@item.Id" class="text" style="color: @(isCurrent ? "white" : item.Color)">@item.Name</a>
         </button>
     }
 </div>
@@ -42,26 +39,35 @@
                     <h3>
                         @item.Title
                     </h3>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     <div class="grid-default grid-default-2 mb-2">
                         <p class="m-0">@DateHelpers.DateFormat(item.DateCreated)</p>
+                        <p class="m-0 text-primary">Заказчик - @(item.Customer?.Name ?? "-")</p>
                         <p class="m-0 text-info">Желаемый дедлайн - @DateHelpers.DateFormat(item.DateDeadLine, true)</p>
                     </div>
-                    <h6>Ваше примечание</h6>
+                    <h6>Примечание от заказчика</h6>
                     <p class="m-0">
                         @item.Description
                     </p>
                 </li>
                 <li class="list-group-item d-flex justify-content-between align-items-center" style="background: @item.Status.Status.Color;">
                     <p class="text text-white m-0">@item.Status.Status.Name</p>
-                    @if (item.Contract != null)
-                    {
-                        <button class="btn btn-light">
-                            <a class="text-primary" asp-area="Customer" asp-controller="Contract" asp-action="Details" asp-route-id="@item.Contract.Id">К договору</a>
-                        </button>
-                    }
+                    <div>
+                        @if (item.Status.StatusId == RequestStatus.Pending.Id)
+                        {
+                            <button class="btn btn-success mr-2">
+                                <a asp-area="Planner" asp-controller="Contract" asp-action="Create" asp-route-requestId="@item.Id">Добавить договор</a>
+                            </button>
+                            <button class="btn btn-danger">
+                                <a asp-area="Planner" asp-controller="Request" asp-action="SetStatus" asp-route-id="@item.Id" asp-route-statusId="@RequestStatus.Denied.Id">Отказать</a>
+                            </button>
+                        }
+                        else if (item.Contract != null)
+                        {
+                            <button class="btn btn-light">
+                                <a class="text-primary" asp-area="Planner" asp-controller="Contract" asp-action="Details" asp-route-id="@item.Contract.Id">К договору</a>
+                            </button>
+                        }
+                    </div>
                 </li>
             </ul>
         </div>
