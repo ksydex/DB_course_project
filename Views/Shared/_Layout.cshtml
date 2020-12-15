@@ -38,7 +38,7 @@
                     @if (isAuthenticated)
                     {
                         <li class="d-flex flex-items-center mt-2 mt-md-0" style="margin-left: auto">
-                            <p class="text text-info m-0 mr-3" style="line-height: 2.5">@user?.Name</p>
+                            <p class="text text-info m-0 mr-3" style="line-height: 2.5">@(user?.Role.Name + " " + user?.Name)</p>
 
                             <a asp-area="Auth" asp-controller="Auth" asp-action="LogOut">
                                 <button class="btn btn-light">Выход</button>

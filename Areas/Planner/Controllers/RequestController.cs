@@ -39,6 +39,24 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
 
             return View(await applicationContext.ToListAsync());
         }
+        
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var request = await _db.Requests
+                .Include(r => r.Customer)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (request == null)
+            {
+                return NotFound();
+            }
+
+            return View(request);
+        }
 
         public async Task<IActionResult> SetStatus(int id, [FromQuery] int statusId)
         {

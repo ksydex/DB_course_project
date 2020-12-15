@@ -1,9 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ContractAndProjectManager.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using ContractAndProjectManager.Data;
 using ContractAndProjectManager.Entities;
 using Microsoft.AspNetCore.Authorization;
 
@@ -11,24 +13,28 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
 {
     [Authorize(Roles = Role.Keys.Planner )]
     [Area("Planner")]
-    public class ProjectController : Controller
+    public class ContractStageController : Controller
     {
         private readonly ApplicationContext _context;
 
-        
-        public ProjectController(ApplicationContext context)
+        private IActionResult ToContract(int id)
+        {
+            return RedirectToAction("Details", "Contract", new { Area = "Planner", Id = id });
+        }
+
+        public ContractStageController(ApplicationContext context)
         {
             _context = context;
         }
 
-        // GET: Project
+        // GET: ContractStage
         public async Task<IActionResult> Index()
         {
-            var applicationContext = _context.Projects.Include(p => p.Contract).Include(p => p.Team);
+            var applicationContext = _context.ContractStages.Include(c => c.Contract);
             return View(await applicationContext.ToListAsync());
         }
 
-        // GET: Project/Details/5
+        // GET: ContractStage/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,49 +42,42 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Projects
-                .Include(p => p.Contract)
-                .Include(p => p.Team)
+            var contractStage = await _context.ContractStages
+                .Include(c => c.Contract)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (project == null)
+            if (contractStage == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(contractStage);
         }
 
-        // GET: Project/Create
+        // GET: ContractStage/Create
         public IActionResult Create([FromQuery] int contractId = default)
         {
-            ViewData["ContractId"] = new SelectList(_context.Contracts.Where(x => x.Project == null), "Id", "Title", contractId);
+            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", contractId);
             ViewData["ContractIdSet"] = contractId != default;
-            
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Title");
-            
             return View();
         }
 
-        // POST: Project/Create
+        // POST: ContractStage/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,DateStart,ContractId,TeamId")] Entities.Project project)
+        public async Task<IActionResult> Create([Bind("Id,Title,Description,DateStart,DateDeadLine,ContractId")] ContractStage contractStage)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(project);
+                _context.Add(contractStage);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return ToContract(contractStage.ContractId);
             }
-            
-            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", project.ContractId);
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Id", project.TeamId);
-            return View(project);
+            return View(contractStage);
         }
 
-        // GET: Project/Edit/5
+        // GET: ContractStage/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -86,24 +85,23 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Projects.FindAsync(id);
-            if (project == null)
+            var contractStage = await _context.ContractStages.FindAsync(id);
+            if (contractStage == null)
             {
                 return NotFound();
             }
-            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", project.ContractId);
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Id", project.TeamId);
-            return View(project);
+            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", contractStage.ContractId);
+            return View(contractStage);
         }
 
-        // POST: Project/Edit/5
+        // POST: ContractStage/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,DateCreated,DateStart,ContractId,TeamId")] Entities.Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,DateCreated,DateStart,DateDeadLine,DateEnd,ContractId")] ContractStage contractStage)
         {
-            if (id != project.Id)
+            if (id != contractStage.Id)
             {
                 return NotFound();
             }
@@ -112,12 +110,12 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
             {
                 try
                 {
-                    _context.Update(project);
+                    _context.Update(contractStage);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectExists(project.Id))
+                    if (!ContractStageExists(contractStage.Id))
                     {
                         return NotFound();
                     }
@@ -128,12 +126,11 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", project.ContractId);
-            ViewData["TeamId"] = new SelectList(_context.Teams, "Id", "Id", project.TeamId);
-            return View(project);
+            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", contractStage.ContractId);
+            return View(contractStage);
         }
 
-        // GET: Project/Delete/5
+        // GET: ContractStage/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -141,32 +138,32 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Projects
-                .Include(p => p.Contract)
-                .Include(p => p.Team)
+            var contractStage = await _context.ContractStages
+                .Include(c => c.Contract)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (project == null)
+            if (contractStage == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(contractStage);
         }
 
-        // POST: Project/Delete/5
+        // POST: ContractStage/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var project = await _context.Projects.FindAsync(id);
-            _context.Projects.Remove(project);
+            var contractStage = await _context.ContractStages.FindAsync(id);
+            var contractId = contractStage.ContractId;
+            _context.ContractStages.Remove(contractStage);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return ToContract(contractId);
         }
 
-        private bool ProjectExists(int id)
+        private bool ContractStageExists(int id)
         {
-            return _context.Projects.Any(e => e.Id == id);
+            return _context.ContractStages.Any(e => e.Id == id);
         }
     }
 }

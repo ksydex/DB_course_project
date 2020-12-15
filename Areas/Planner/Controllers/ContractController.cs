@@ -26,9 +26,16 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
         }
 
         // GET: Contract
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] int statusId = 0)
         {
-            var applicationContext = _context.Contracts.Include(c => c.Planner).Include(c => c.Request);
+
+            var applicationContext = _context.Contracts.AsQueryable();
+            if (statusId != default && await _context.ContractStatuses.AnyAsync(x => x.Id == statusId))
+                applicationContext = applicationContext.Where(x =>
+                    x.StatusHistory.OrderByDescending(y => y.Id).Take(1).FirstOrDefault().StatusId == statusId);
+            
+            ViewData["statusId"] = statusId;
+            
             return View(await applicationContext.ToListAsync());
         }
 
@@ -57,7 +64,7 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
         {
             var reqs = _context.Requests.Where(x =>
                 x.StatusHistory.OrderByDescending(y => y.Id).Take(1).FirstOrDefault().StatusId ==
-                RequestStatus.Pending.Id).ToList();
+                RequestStatus.Pending.Id && x.Contract == null).ToList();
 
             ViewData["RequestId"] = new SelectList(reqs, "Id", "Title", requestId);
             ViewData["RequestIdSet"] = requestId != default;

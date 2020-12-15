@@ -22,12 +22,18 @@ namespace ContractAndProjectManager.Areas.Customer.Controllers
             _userService = userService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index([FromQuery] int statusId = 0)
         {
             var myRequestsIds =
                 (await _context.Requests.Where(x => x.CustomerId == _userService.UserId).ToListAsync()).Select(
                     x => x.Id);
             var applicationContext = _context.Contracts.Where(x => myRequestsIds.Contains(x.RequestId));
+            if (statusId != default && await _context.ContractStatuses.AnyAsync(x => x.Id == statusId))
+                applicationContext = applicationContext.Where(x =>
+                    x.StatusHistory.OrderByDescending(y => y.Id).Take(1).FirstOrDefault().StatusId == statusId);
+            
+            ViewData["statusId"] = statusId;
+            
             return View(await applicationContext.ToListAsync());
         }
 

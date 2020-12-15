@@ -24,6 +24,8 @@ namespace ContractAndProjectManager.Entities
         public int RequestId { get; set; }
         public virtual Request Request { get; set; }
 
+        public virtual Project Project { get; set; }
+
         [NotMapped]
         public ContractStatusHistory Status => StatusHistory?.OrderByDescending(x => x.Id)
             .FirstOrDefault();
