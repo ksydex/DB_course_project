@@ -1,1 +1,17 @@
-﻿<h3>TeamLead</h3>
+﻿@using ContractAndProjectManager.Services
+@inject UserService UserService;
+
+@{
+    var team = UserService?.User?.Team;
+}
+@if (team != null)
+{
+    <div class="grid-default">
+        <a class="btn btn-info btn-lg" asp-area="TeamLead" asp-controller="Home" asp-action="Team">Моя команда</a>
+        <a class="btn btn-primary btn-lg" asp-area="TeamLead" asp-controller="Project" asp-action="Index">Мои проекты</a>
+    </div>
+}
+else
+{
+    <p class="text text-info">На данный момент вы не состоите ни в одной команде.</p>
+}

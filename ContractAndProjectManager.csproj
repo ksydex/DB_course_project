@@ -48,6 +48,7 @@
     <_ContentIncludedByDefault Remove="Areas\Planner\Team\Details.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Planner\Team\Edit.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Planner\Team\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Team\Index.cshtml" />
   </ItemGroup>
 
 </Project>

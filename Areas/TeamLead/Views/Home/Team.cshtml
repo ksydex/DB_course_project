@@ -1,0 +1,27 @@
+﻿@model ContractAndProjectManager.Entities.Team;
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Ваша команда - @Model.Title
+            </div>
+
+            <div class="card-body">
+                <div class="list-group">
+                    @foreach (var item in Model.Members)
+                    {
+                        @if (item.Id == Model.Lead.Id)
+                        {
+                            <a class="list-group-item text-primary">@item.Name - Тимлид (вы)</a>
+                        }
+                        else
+                        {
+                            <a class="list-group-item">@item.Name</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

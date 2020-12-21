@@ -2,6 +2,7 @@
 @using ContractAndProjectManager.Models
 @using ContractAndProjectManager.Data
 @using Castle.Core.Internal
+@using ContractAndProjectManager.Entities
 @model ContractAndProjectManager.Entities.Team
 @inject ApplicationContext DbContext;
 
@@ -12,7 +13,7 @@
     {
         Id = x.Id,
         Title = x.Name
-    }, leadId);
+    }, leadId, true);
     
     var employeeSelectList = SelectListHelpers.CreateSelectList(DbContext.Employees.Where(x => x.TeamId == null), x => new SelectListModel
     {
@@ -26,7 +27,7 @@
 <h4>Team</h4>
 <hr/>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id"/>
@@ -62,7 +63,7 @@
                 </form>
             </div>
             <div>
-                @Html.Table(Model.Employees, x => new Dictionary<string, object>
+                @Html.Table(Model?.Employees ?? new List<Employee>(), x => new Dictionary<string, object>
                 {
                     { "Имя", x.Name }
                 }, x => new List<TableActionButton>

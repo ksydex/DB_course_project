@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using ContractAndProjectManager.Infrastructure.Interfaces;
 
@@ -18,6 +19,8 @@ namespace ContractAndProjectManager.Entities
 
         public int ContractId { get; set; }
         public virtual Contract Contract { get; set; }
+        
+        public virtual List<ProjectStage> ProjectStages { get; set; }
 
         public ContractStage()
         {

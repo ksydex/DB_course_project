@@ -1,0 +1,40 @@
+﻿@using ContractAndProjectManager.Helpers
+@using ContractAndProjectManager.Entities
+@model List<ContractAndProjectManager.Entities.Project>
+
+<h3>Мои проекты</h3>
+
+<div>
+    @foreach (var item in Model.OrderByDescending(x => x.Id))
+    {
+        <div class="card mb-3">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <h3>
+                        @item.Name
+                    </h3>
+                    <div class="grid-default grid-default-2 mb-2">
+                        <p class="m-0">@DateHelpers.DateFormat(item.DateCreated)</p>
+                        @if (item.DateDeadLine != null)
+                        {
+                            <p class="m-0 text-info">Дедлайн - @DateHelpers.DateFormat(item.DateDeadLine.Value, true)</p>
+                        }
+                    </div>
+                    <h6>Ваше примечание</h6>
+                    <p class="m-0">
+                        @item.Description
+                    </p>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center" style="background: @item.Status?.Status.Color;">
+                    <p class="text text-white m-0">@item.Status?.Status.Name</p>
+                    @if (item.Contract != null)
+                    {
+                        <button class="btn btn-light">
+                            <a class="text-primary" asp-area="TeamLead" asp-controller="Home" asp-action="Contract" asp-route-id="@item.Contract.Id">К договору</a>
+                        </button>
+                    }
+                </li>
+            </ul>
+        </div>
+    }
+</div>

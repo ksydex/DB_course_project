@@ -5,6 +5,12 @@ namespace ContractAndProjectManager.Entities
 {
     public class ProjectStatus : Status
     {
+        public static ProjectStatus Pending = new ProjectStatus
+        {
+            Id = 15,
+            Name = "Ожидание",
+            Color = "#ffc107"
+        };
         public static ProjectStatus Active = new ProjectStatus
         {
             Id = 2,

@@ -147,7 +147,8 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
                     await _context.SaveChangesAsync();
                     
                     var currentTeamLead = await _context.TeamLeads.FirstOrDefaultAsync(x => x.TeamId == team.Id);
-                    currentTeamLead.TeamId = null;
+                    if(currentTeamLead != null)
+                        currentTeamLead.TeamId = null;
 
                     teamLead.TeamId = team.Id;
                     await _context.SaveChangesAsync();

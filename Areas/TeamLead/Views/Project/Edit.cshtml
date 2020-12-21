@@ -1,0 +1,57 @@
+﻿@using ContractAndProjectManager.Helpers
+@using ContractAndProjectManager.Entities
+@model ContractAndProjectManager.Entities.Project
+
+<h3 class="text text-primary">@Model.Name</h3>
+<p class="text">@Model.Description</p>
+
+<div class="grid-default grid-default-2 mb-2">
+    <p class="m-0 text" style="color: @Model.Status.Status.Color">@Model.Status.Status.Name</p>
+    @if (Model.DateStart != null && Model.Status.Status.Id == ProjectStatus.Pending.Id)
+    {
+        <p class="m-0 text-success" style="color: @Model.Status.Status.Color">Дата начала - @DateHelpers.DateFormat(Model.DateStart.Value, true)</p>
+    }
+    @if (Model.DateDeadLine != null)
+    {
+        <p class="m-0 text-info">Дедлайн - @DateHelpers.DateFormat(Model.DateDeadLine.Value, true)</p>
+    }
+</div>
+
+<h4>Этапы</h4>
+
+@foreach (var item in Model.Contract.Stages)
+{
+    <div class="card mb-2">
+        <div class="card-header">
+            <div class="d-flex justify-content-between">
+                <p class="text m-0">@item.Title</p>
+                <p class="m-0 text" style="opacity: 0.7">Этап договора</p>
+            </div>
+            <div class="grid-default grid-default-2 mt-2">
+                @if (item.DateStart != null)
+                {
+                    <p class="m-0 text-success" style="color: @Model.Status.Status.Color">Дата начала - @DateHelpers.DateFormat(item.DateStart.Value, true)</p>
+                }
+                @if (item.DateDeadLine != null)
+                {
+                    <p class="m-0 text-info">Дата окончания - @DateHelpers.DateFormat(item.DateDeadLine.Value, true)</p>
+                }
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="list-group">
+                @if (item.ProjectStages.Count == 0)
+                {
+                    <p class="text m-0">Нет связанных этапов проекта</p>
+                }
+                else
+                {
+                    @foreach (var stage in item.ProjectStages)
+                    {
+                        <div class="list-group-item">@stage.Title</div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}
