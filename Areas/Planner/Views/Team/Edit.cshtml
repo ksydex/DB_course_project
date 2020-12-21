@@ -1,0 +1,90 @@
+@using ContractAndProjectManager.Helpers
+@using ContractAndProjectManager.Models
+@using ContractAndProjectManager.Data
+@using Castle.Core.Internal
+@model ContractAndProjectManager.Entities.Team
+@inject ApplicationContext DbContext;
+
+@{
+    ViewData["Title"] = "Edit";
+    var leadId = Model.Lead?.Id ?? 0;
+    var teamLeadSelectList = SelectListHelpers.CreateSelectList(DbContext.TeamLeads.Where(x => x.TeamId == null || x.Id == leadId), x => new SelectListModel
+    {
+        Id = x.Id,
+        Title = x.Name
+    }, leadId);
+    
+    var employeeSelectList = SelectListHelpers.CreateSelectList(DbContext.Employees.Where(x => x.TeamId == null), x => new SelectListModel
+    {
+        Id = x.Id,
+        Title = x.Name
+    });
+}
+
+<h1>Edit</h1>
+
+<h4>Team</h4>
+<hr/>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id"/>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control"/>
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Тимлид</label>
+                <select name="teamLeadId" asp-items="teamLeadSelectList" class="custom-select"></select>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">Работники</div>
+            <div class="card-body">
+                <form asp-action="AddEmployee" class="d-flex">
+                    <input hidden name="teamId" value="@Model.Id"/>
+                    <select disabled="@employeeSelectList.IsNullOrEmpty()" name="employeeId" asp-items="employeeSelectList" class="custom-select">
+                        @if (employeeSelectList.IsNullOrEmpty())
+                        {
+                            <option>Нет свободных работников</option>
+                        }
+                    </select>
+                    <input disabled="@employeeSelectList.IsNullOrEmpty()" type="submit" value="Добавить" class="btn btn-primary ml-2">
+                </form>
+            </div>
+            <div>
+                @Html.Table(Model.Employees, x => new Dictionary<string, object>
+                {
+                    { "Имя", x.Name }
+                }, x => new List<TableActionButton>
+                {
+                    new TableActionButton
+                    {
+                        Text = "Убрать",
+                        Action = "RemoveEmployee",
+                        Controller = "Team",
+                        Arguments = new
+                        {
+                            Area = "Planner",
+                            teamId = Model.Id,
+                            employeeId = x.Id
+                        }
+                    }
+                }, false, false)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

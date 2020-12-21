@@ -6,7 +6,7 @@
 }
 
 * {
-    font-family: 'Fira Sans', sans-serif;
+    font-family: 'Fira Sans', sans-serif !important;
     transition: 0.3s all;
 }
 
@@ -123,4 +123,8 @@ button > a:hover {
 .white-space-no-wrap {
     overflow: hidden;
     white-space: nowrap;
+}
+
+.grid-categories {
+    grid-template-columns: repeat(auto-fit, minmax(70px, max-content));
 }

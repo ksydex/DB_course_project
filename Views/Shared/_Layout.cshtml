@@ -17,7 +17,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - Проектная деятельность</title>
+    <title>@ViewData["Title"] @((ViewData["Title"] == null ? "" : " - ") + "Проектная деятельность")</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/reset.css"/>
@@ -38,7 +38,7 @@
                     @if (isAuthenticated)
                     {
                         <li class="d-flex flex-items-center mt-2 mt-md-0" style="margin-left: auto">
-                            <p class="text text-info m-0 mr-3" style="line-height: 2.5">@(user?.Role.Name + " " + user?.Name)</p>
+                            <p class="text text-info m-0 mr-3" style="line-height: 2.5">@(user?.Role.Name)<span style="font-weight: 500"> @user?.Name</span></p>
 
                             <a asp-area="Auth" asp-controller="Auth" asp-action="LogOut">
                                 <button class="btn btn-light">Выход</button>

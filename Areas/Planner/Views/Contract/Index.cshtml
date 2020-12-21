@@ -22,7 +22,7 @@
     </button>
 </div>
 
-<div class="grid-default grid-default-2 mb-3">
+<div class="grid-default grid-default-2 mb-3 grid-categories">
 
     @foreach (var item in statuses)
     {
@@ -44,15 +44,11 @@
                             @item.Title
                         </h3>
 
-                        <button class="btn btn-light">
-                            <a class="text-info" asp-area="Planner" asp-controller="Contract" asp-action="Details" asp-route-id="@item.Id">Подробнее</a>
-                        </button>
-                    </div>
+                        <div>
+                            <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@item.Id">Редактировать</a>
+                            <a class="btn btn-outline-info" asp-area="Planner" asp-controller="Contract" asp-action="Details" asp-route-id="@item.Id">Подробнее</a>
+                        </div>
 
-                    <div>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                     </div>
 
                     <div class="grid-default grid-default-2 mb-2">
