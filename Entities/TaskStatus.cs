@@ -1,4 +1,5 @@
-﻿using ContractAndProjectManager.Infrastructure.AbstractClasses;
+﻿using System.Collections.Generic;
+using ContractAndProjectManager.Infrastructure.AbstractClasses;
 using ContractAndProjectManager.Models;
 
 namespace ContractAndProjectManager.Entities
@@ -24,6 +25,13 @@ namespace ContractAndProjectManager.Entities
             Id = 6,
             Name = "Готово",
             Color = "#36b37e"
+        };
+        
+        public static List<TaskStatus> All = new List<TaskStatus>
+        {
+            Pending,
+            InWork,
+            Completed
         };
     }
     

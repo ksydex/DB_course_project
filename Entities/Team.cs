@@ -12,6 +12,8 @@ namespace ContractAndProjectManager.Entities
         public string Title { get; set; }
 
         [NotMapped] public TeamLead Lead => Members?.FirstOrDefault(x => x.RoleId == Role.TeamLead.Id) as TeamLead;
+        
+        public virtual IEnumerable<Project> Projects { get; set; }
 
         [NotMapped]
         public List<Employee> Employees =>

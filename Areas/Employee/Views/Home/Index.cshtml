@@ -1,1 +1,76 @@
-﻿<h3>Employee</h3>
+﻿@using ContractAndProjectManager.Services
+@using ContractAndProjectManager.Helpers
+@using ContractAndProjectManager.Models
+@using TaskStatus = ContractAndProjectManager.Entities.TaskStatus
+@using ContractAndProjectManager.Entities
+@inject UserService UserService;
+
+@{
+    var team = UserService?.User?.Team;
+}
+@if (team != null)
+{
+    <div class="grid-default">
+        <a class="btn btn-info btn-lg" asp-area="TeamLead" asp-controller="Home" asp-action="Team">Моя команда</a>
+        <a class="btn btn-primary btn-lg" asp-area="TeamLead" asp-controller="Project" asp-action="Index">Мои проекты</a>
+    </div>
+
+    <hr/>
+
+    <h4>Моя работа</h4>
+    @foreach (var project in team.Projects.Where(x => x.Status.Status.Id != ProjectStatus.Denied.Id || x.Status.Status.Id != ProjectStatus.Completed.Id).OrderByDescending(x => x.Id))
+    {
+        <div class="card mb-3" style="border-color: @project.Status?.Status.Color">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <p class="m-0">@project.Name</p>
+                <p class="m-0" style="opacity: 0.7">Проект</p>
+            </div>
+            <div class="card-body">
+                <h5 class="mb-2">Ваши задачи</h5>
+                <div class="list-group">
+                    @foreach (var stage in project.Stages.Where(x => x.Tasks.Any(y => y.ExecutorId == UserService.UserId)).OrderBy(x => x.ContractStageId))
+                    {
+                        <div class="list-group-item p-0">
+                            <h6 class="p-3 m-0">@stage.Title</h6>
+                            <div>
+                                @foreach (var task in stage.Tasks.Where(x => x.ExecutorId == UserService.UserId))
+                                {
+                                    <div class="px-3 py-2 d-flex justify-content-between" style="border-bottom: solid 1px var(--light); border-right: solid 3px @task.Status?.Status.Color;">
+                                        <p class="m-0">@task.Title</p>
+                                        <div class="d-flex align-items-center">
+                                            @if (task.DateDeadLine != null || task.Stage.DateDeadLine != null && task.Status?.Id != TaskStatus.Completed.Id)
+                                            {
+                                                <p class="m-0 mr-2" style="opacity: 0.8">До - @DateHelpers.DateFormat((task.DateDeadLine ?? task.Stage?.DateDeadLine).Value, true)</p>
+                                            }
+                                            @if (task.DateEnd != null)
+                                            {
+                                                <p class="m-0 mr-2 text-success">@DateHelpers.DateFormat(task.DateEnd.Value)</p>
+                                            }
+                                            @{
+                                                var taskStatuses = SelectListHelpers.CreateSelectList(TaskStatus.All, x => new SelectListModel
+                                                {
+                                                    Id = x.Id,
+                                                    Title = x.Name
+                                                }, task.Status?.Status.Id ?? 0);
+
+                                                <form asp-area="Employee" asp-controller="Task" asp-action="SetStatus">
+                                                    <input hidden name="taskId" value="@task.Id"/>
+                                                    <input hidden name="returnToHome" value="true"/>
+                                                    <select onchange="this.form.submit()" style="border-color: @task.Status?.Status.Color" name="statusId" class="custom-select custom-select-sm" asp-items="taskStatuses"></select>
+                                                </form>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p class="text text-info">На данный момент вы не состоите ни в одной команде.</p>
+}

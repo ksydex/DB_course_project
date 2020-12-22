@@ -1,4 +1,5 @@
-﻿using ContractAndProjectManager.Infrastructure.AbstractClasses;
+﻿using System.Collections.Generic;
+using ContractAndProjectManager.Infrastructure.AbstractClasses;
 using ContractAndProjectManager.Models;
 
 namespace ContractAndProjectManager.Entities
@@ -30,6 +31,14 @@ namespace ContractAndProjectManager.Entities
             Id = 14,
             Name = "Отклонен",
             Color = "#d04437"
+        };
+        
+        public static List<ProjectStatus> All = new List<ProjectStatus>
+        {
+            Pending,
+            Active,
+            Completed,
+            Denied
         };
     }
     

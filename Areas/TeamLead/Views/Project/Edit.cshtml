@@ -1,8 +1,25 @@
 ﻿@using ContractAndProjectManager.Helpers
 @using ContractAndProjectManager.Entities
+@using ContractAndProjectManager.Models
 @model ContractAndProjectManager.Entities.Project
 
-<h3 class="text text-primary">@Model.Name</h3>
+@{
+    var projectStatuses = SelectListHelpers.CreateSelectList(ProjectStatus.All, x => new SelectListModel
+    {
+        Id = x.Id,
+        Title = x.Name
+    }, Model.Status?.StatusId ?? 0);
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <h3 class="text text-primary">@Model.Name</h3>
+    <form asp-area="TeamLead" asp-controller="Project" asp-action="SetStatus">
+        <input hidden name="projectId" value="@Model.Id"/>
+        <input hidden name="returnToHome" value="true"/>
+        <select onchange="this.form.submit()" style="border-color: @Model.Status?.Status.Color" name="statusId" class="custom-select" asp-items="projectStatuses"></select>
+    </form>
+</div>
+
 <p class="text">@Model.Description</p>
 
 <div class="grid-default grid-default-2 mb-2">
