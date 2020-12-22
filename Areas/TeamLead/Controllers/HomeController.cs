@@ -28,7 +28,7 @@ namespace ContractAndProjectManager.Areas.TeamLead.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Team()
+        public IActionResult Team()
         {
             return View(_userService.User.Team);
         }

@@ -17,8 +17,6 @@
     }
 </div>
 
-<h4>Этапы</h4>
-
 @foreach (var item in Model.Contract.Stages)
 {
     <div class="card mb-2">
@@ -48,9 +46,76 @@
                 {
                     @foreach (var stage in item.ProjectStages)
                     {
-                        <div class="list-group-item">@stage.Title</div>
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h6 class="m-0">@stage.Title</h6>
+                                <div>
+                                    <div class="btn-group btn-group-sm">
+                                        <a class="btn btn-outline-danger" asp-area="TeamLead" asp-controller="ProjectStage" asp-action="Delete" asp-route-id="@stage.Id">Удалить</a>
+                                        <a class="btn btn-outline-primary" asp-area="TeamLead" asp-controller="ProjectStage" asp-action="Edit" asp-route-id="@stage.Id">Изменить</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="mb-1" style="opacity: 0.75">Ответственный - @stage.Executor?.Name</p>
+                            @if (stage.Description != null)
+                            {
+                                <p class="m-0">@stage.Description</p>
+                            }
+                            <div class="card border-primary mt-2">
+                                <div class="card-header p-2">Задачи</div>
+                                <div class="card-body p-2">
+                                    <div class="list-group mb-2">
+                                        @foreach (var task in stage.Tasks)
+                                        {
+                                            <div class="list-group-item" style="border-left: 3px solid @task.Status?.Status.Color">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <h6>@task.Title</h6>
+                                                    <div class="btn-group btn-group-sm">
+                                                        <a class="btn btn-outline-danger" asp-area="TeamLead" asp-controller="Task" asp-action="Delete" asp-route-id="@task.Id">Удалить</a>
+                                                        <a class="btn btn-outline-primary" asp-area="TeamLead" asp-controller="Task" asp-action="Edit" asp-route-id="@task.Id">Изменить</a>
+                                                    </div>
+                                                </div>
+                                                <div class="grid-default grid-default-2 my-1">
+                                                    <p class="m-0 text" style="color: @task.Status?.Status.Color">
+                                                        <span class="text-dark">Статус -</span> @task.Status?.Status.Name
+                                                    </p>
+                                                    @if (task.Executor != null)
+                                                    {
+                                                        <p class="m-0 text">Исполнитель - @task.Executor.Name</p>
+                                                    }
+                                                </div>
+                                                @if (task.DateStart != null || task.DateDeadLine != null)
+                                                {
+                                                    <div class="grid-default grid-default-2 my-1">
+                                                        @if (task.DateStart != null)
+                                                        {
+                                                            <p class="m-0 text-success" style="color: @Model.Status.Status.Color">Дата начала - @DateHelpers.DateFormat(task.DateStart.Value, true)</p>
+                                                        }
+                                                        @if (task.DateDeadLine != null)
+                                                        {
+                                                            <p class="m-0 text-info">Дата завершения - @DateHelpers.DateFormat(task.DateDeadLine.Value, true)</p>
+                                                        }
+                                                    </div>
+                                                }
+                                                @if (task.Description != null)
+                                                {
+                                                    <p class="m-0">@task.Description</p>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+
+                                    <div class="">
+                                        <a class="btn btn-outline-primary btn-sm" asp-area="TeamLead" asp-controller="Task" asp-action="Create" asp-route-projectStageId="@stage.Id">Добавить задачу</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     }
                 }
+                <div class="mt-2">
+                    <a class="btn btn-primary btn-sm" asp-area="TeamLead" asp-controller="ProjectStage" asp-action="Create" asp-route-contractStageId="@item.Id">Добавить этап</a>
+                </div>
             </div>
         </div>
     </div>

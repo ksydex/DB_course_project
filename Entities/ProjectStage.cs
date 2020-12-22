@@ -14,9 +14,9 @@ namespace ContractAndProjectManager.Entities
 
         public DateTime DateCreated { get; set; }
 
-        public DateTime? DateStart => ContractStage.DateStart;
-        public DateTime? DateDeadLine => ContractStage.DateDeadLine;
-        public DateTime? DateEnd => ContractStage.DateEnd;
+        public DateTime? DateStart => ContractStage?.DateStart;
+        public DateTime? DateDeadLine => ContractStage?.DateDeadLine;
+        public DateTime? DateEnd => ContractStage?.DateEnd;
 
         public int ProjectId { get; set; }
         public virtual Project Project { get; set; }
