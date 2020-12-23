@@ -8,7 +8,7 @@ namespace ContractAndProjectManager.Entities
     {
         public static ProjectStatus Pending = new ProjectStatus
         {
-            Id = 15,
+            Id = 16,
             Name = "Ожидание",
             Color = "#ffc107"
         };

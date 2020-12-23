@@ -1,7 +1,10 @@
 ﻿@using ContractAndProjectManager.Helpers
 @using ContractAndProjectManager.Entities
 @using ContractAndProjectManager.Models
+@using ContractAndProjectManager.Data
+@using Microsoft.EntityFrameworkCore
 @model ContractAndProjectManager.Entities.Project
+@inject ApplicationContext DbContext;
 
 @{
     var projectStatuses = SelectListHelpers.CreateSelectList(ProjectStatus.All, x => new SelectListModel
@@ -9,6 +12,11 @@
         Id = x.Id,
         Title = x.Name
     }, Model.Status?.StatusId ?? 0);
+
+    var analytics = await DbContext.ProjectAnalytics.FirstOrDefaultAsync(x => x.ProjectId == Model.Id);
+    var stageIds = Model.Stages.Select(x => x.Id);
+    var stageAnalytics = await DbContext.ProjectStageAnalytics.Where(x => stageIds.Contains(x.ProjectStageId)).ToListAsync();
+
 }
 
 <div class="d-flex justify-content-between align-items-center">
@@ -23,8 +31,8 @@
 <p class="text">@Model.Description</p>
 
 <div class="grid-default grid-default-2 mb-2">
-    <p class="m-0 text" style="color: @Model.Status.Status.Color">@Model.Status.Status.Name</p>
-    @if (Model.DateStart != null && Model.Status.Status.Id == ProjectStatus.Pending.Id)
+    <p class="m-0 text" style="color: @Model.Status?.Status.Color">@Model.Status?.Status.Name</p>
+    @if (Model.DateStart != null && Model?.Status?.Status.Id == ProjectStatus.Pending.Id)
     {
         <p class="m-0 text-success" style="color: @Model.Status.Status.Color">Дата начала - @DateHelpers.DateFormat(Model.DateStart.Value, true)</p>
     }
@@ -32,6 +40,21 @@
     {
         <p class="m-0 text-info">Дедлайн - @DateHelpers.DateFormat(Model.DateDeadLine.Value, true)</p>
     }
+</div>
+
+<div class="card mb-2">
+    <div class="card-header">
+        Аналитика
+    </div>
+    <div class="card-body">
+        <div class="grid-default grid-default-2">
+            <p class="text text-dark m-0">Суммарно времени - @(analytics.TotalHours?.ToString("0.0")) ч</p>
+            <p class="text text-dark m-0">Этапов - @analytics.StagesCount</p>
+            <p class="text text-dark m-0">Всего задач - @analytics.TasksCount</p>
+            <p class="text text-dark m-0">Выполнено задач - @analytics.DoneTasksCount</p>
+            <p class="text text-dark m-0">Действующих сотрудников - @analytics.EmployeesCount</p>
+        </div>
+    </div>
 </div>
 
 @foreach (var item in Model.Contract.Stages)
@@ -63,9 +86,11 @@
                 {
                     @foreach (var stage in item.ProjectStages)
                     {
+                        var sa = stageAnalytics.FirstOrDefault(x => x.ProjectStageId == stage.Id);
+
                         <div class="list-group-item">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="m-0">@stage.Title</h6>
+                                <h5 class="m-0">@stage.Title</h5>
                                 <div>
                                     <div class="btn-group btn-group-sm">
                                         <a class="btn btn-outline-danger" asp-area="TeamLead" asp-controller="ProjectStage" asp-action="Delete" asp-route-id="@stage.Id">Удалить</a>
@@ -78,6 +103,23 @@
                             {
                                 <p class="m-0">@stage.Description</p>
                             }
+
+                            @if (sa != null)
+                            {
+                                <hr class="my-2"/>
+                                <h6>Аналитика</h6>
+                                <div class="grid-default grid-default-2">
+                                    @if (sa.TotalHours != null)
+                                    {
+                                        <p class="text text-dark m-0">Суммарно времени - @(sa.TotalHours?.ToString("0.0")) ч</p>
+                                    }
+                                    <p class="text text-dark m-0">Всего задач - @sa.TasksCount</p>
+                                    <p class="text text-dark m-0">Выполнено задач - @sa.DoneTasksCount</p>
+                                    <p class="text text-dark m-0">Зайдествовано сотрудников - @sa.EmployeesCount</p>
+                                </div>
+                            }
+
+
                             <div class="card border-primary mt-2">
                                 <div class="card-header p-2">Задачи</div>
                                 <div class="card-body p-2">

@@ -1,6 +1,7 @@
 @using ContractAndProjectManager.Helpers
 @using ContractAndProjectManager.Data
 @using ContractAndProjectManager.Entities
+@using Microsoft.EntityFrameworkCore
 @model IEnumerable<ContractAndProjectManager.Entities.Request>
 @inject ApplicationContext DbContext;
 
@@ -36,6 +37,8 @@
 <div>
     @foreach (var item in Model.OrderByDescending(x => x.Id))
     {
+        var analytics = await DbContext.RequestAnalytics.FirstOrDefaultAsync(x => x.RequestId == item.Id);
+        
         <div class="card mb-3">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
@@ -56,6 +59,18 @@
                         @item.Description
                     </p>
                 </li>
+                @if (item.Contract != null)
+                {
+                    <li class="list-group-item">
+                        <h5>Аналитика</h5>
+                        <div class="grid-default grid-default-2">
+                            <p class="m-0">Рабочего времени - @analytics.TotalHours часов</p>
+                            <p class="m-0">Этапов по контракту - @analytics.ContractStagesCount</p>
+                            <p class="m-0">Этапов проекта - @analytics.ProjectStagesCount</p>
+                            <p class="m-0">Задействовано сотрудников - @analytics.EmployeesCount</p>
+                        </div>
+                    </li>
+                }
                 <li class="list-group-item d-flex justify-content-between align-items-center" style="background: @item.Status.Status.Color;">
                     <p class="text text-white m-0">@item.Status.Status.Name</p>
                     @if (item.Contract != null)

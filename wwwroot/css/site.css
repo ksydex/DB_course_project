@@ -114,6 +114,7 @@ button > a:hover {
 
 .grid-default-2 {
     grid-gap: var(--indent-3);
+    grid-template-columns: repeat(auto-fit, minmax(100px, max-content));
 }
 
 .grid-default-3 {

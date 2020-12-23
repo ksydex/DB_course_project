@@ -1,13 +1,26 @@
 @using ContractAndProjectManager.Helpers
 @using ContractAndProjectManager.Entities
+@using ContractAndProjectManager.Data
+@using Microsoft.EntityFrameworkCore
 @model ContractAndProjectManager.Entities.Contract
+@inject ApplicationContext DbContext;
+
 
 @{
     ViewData["Title"] = "Details";
+    var analytics = await DbContext.ContractsAnalytics.FirstOrDefaultAsync(x => x.ContractId == Model.Id);
 }
 
 <div class="card mb-3">
     <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <h5>Аналитика</h5>
+            <div class="grid-default grid-default-2">
+                <p class="m-0">Рабочего времени - @analytics.TotalHours часов</p>
+                <p class="m-0">Этапов - @analytics.StagesCount</p>
+                <p class="m-0">Задействовано сотрудников - @analytics.EmployeesCount</p>
+            </div>
+        </li>
         <li class="list-group-item">
             <div class="d-flex align-items-center justify-content-between">
                 <h3>
@@ -23,6 +36,7 @@
                     <p class="m-0 text-info">Дедлайн - @DateHelpers.DateFormat(Model.DateDeadLine.Value, true)</p>
                 }
             </div>
+
             <div>
                 <h6>Примечание</h6>
                 <p class="m-0">

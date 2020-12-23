@@ -1,9 +1,13 @@
 @using ContractAndProjectManager.Helpers
 @using ContractAndProjectManager.Entities
+@using ContractAndProjectManager.Data
+@using Microsoft.EntityFrameworkCore
 @model ContractAndProjectManager.Entities.Contract
+@inject ApplicationContext DbContext;
 
 @{
     ViewData["Title"] = "Details";
+    var analytics = await DbContext.ContractsAnalytics.FirstOrDefaultAsync(x => x.ContractId == Model.Id);
 }
 
 <div class="card mb-3">
@@ -30,6 +34,16 @@
                 </p>
             </div>
         </li>
+        
+        <li class="list-group-item">
+                    <h5>Аналитика</h5>
+                    <div class="grid-default grid-default-2">
+                        <p class="m-0">Рабочего времени - @analytics.TotalHours часов</p>
+                        <p class="m-0">Этапов - @analytics.StagesCount</p>
+                        <p class="m-0">Задействовано сотрудников - @analytics.EmployeesCount</p>
+                    </div>
+                </li>
+        
         <li class="list-group-item">
             <h5>Этапы</h5>
             <div>
@@ -67,29 +81,6 @@
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center" style="background: @Model.Status.Status.Color;">
             <p class="text text-white m-0">@Model.Status.Status.Name</p>
-            <div>
-                @if (Model.Status.StatusId == RequestStatus.Pending.Id)
-                {
-                    <button class="btn btn-success mr-2">
-                        <a asp-area="Planner" asp-controller="Contract" asp-action="Create" asp-route-requestId="@Model.Id">Добавить договор</a>
-                    </button>
-                    <button class="btn btn-danger">
-                        <a asp-area="Planner" asp-controller="Request" asp-action="SetStatus" asp-route-id="@Model.Id" asp-route-statusId="@RequestStatus.Denied.Id">Отказать</a>
-                    </button>
-                }
-                else if (Model.Request != null)
-                {
-                    if(Model.Project != null)
-                    {
-                        <button class="btn btn-light">
-                            <a class="text-info" asp-area="Customer" asp-controller="Project" asp-action="Details" asp-route-id="@Model.Project.Id">К проекту</a>
-                        </button>
-                    }
-                    <button class="btn btn-light ml-2">
-                        <a class="text-primary" asp-area="Customer" asp-controller="Request" asp-action="Details" asp-route-id="@Model.RequestId">К заявке</a>
-                    </button>
-                }
-            </div>
         </li>
     </ul>
 </div>

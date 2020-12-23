@@ -1,5 +1,4 @@
 ﻿using ContractAndProjectManager.Entities;
-using ContractAndProjectManager.Extensions;
 using ContractAndProjectManager.Infrastructure.EntityConfigurations;
 using ContractAndProjectManager.Models;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +37,11 @@ namespace ContractAndProjectManager.Data
         public DbSet<ProjectStatusHistory> ProjectStatusHistories { get; set; }
         public DbSet<TaskStatusHistory> TaskStatusHistories { get; set; }
 
+        public DbSet<ContractAnalytics> ContractsAnalytics { get; set; }
+        public DbSet<RequestAnalytics> RequestAnalytics { get; set; }
+        public DbSet<ProjectAnalytics> ProjectAnalytics { get; set; }
+        public DbSet<ProjectStageAnalytics> ProjectStageAnalytics { get; set; }
+
         public ApplicationContext(DbContextOptions options) : base(options)
         {
             
@@ -46,8 +50,9 @@ namespace ContractAndProjectManager.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
             modelBuilder.ConfigureStatusEntities();
+            modelBuilder.ConfigureViews();
             modelBuilder.ApplyConfiguration(new RoleEntityConfiguration());
         }
     }

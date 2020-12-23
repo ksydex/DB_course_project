@@ -2,7 +2,7 @@
 using ContractAndProjectManager.Infrastructure.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
 
-namespace ContractAndProjectManager.Extensions
+namespace ContractAndProjectManager.Infrastructure.EntityConfigurations
 {
     public static class StatusEntityConfigurationsExtension
     {
@@ -14,4 +14,5 @@ namespace ContractAndProjectManager.Extensions
             builder.ApplyConfiguration(new ProjectStatusEntityConfiguration());
         }
     }
+    
 }

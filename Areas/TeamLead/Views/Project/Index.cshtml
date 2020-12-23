@@ -10,9 +10,12 @@
         <div class="card mb-3">
             <ul class="list-group list-group-flush">
                 <li class="list-group-item">
-                    <h3>
-                        @item.Name
-                    </h3>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3>
+                            @item.Name
+                        </h3>
+                        <a class="btn btn-outline-info" asp-area="TeamLead" asp-controller="Project" asp-action="Edit" asp-route-id="@item.Id">Подробнее</a>
+                        </div>
                     <div class="grid-default grid-default-2 mb-2">
                         <p class="m-0">@DateHelpers.DateFormat(item.DateCreated)</p>
                         @if (item.DateDeadLine != null)
