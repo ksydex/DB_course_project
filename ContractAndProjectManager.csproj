@@ -50,6 +50,18 @@
     <_ContentIncludedByDefault Remove="Areas\Planner\Team\Edit.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\Planner\Team\Index.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\TeamLead\Team\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Project\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Project\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\ProjectStage\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\ProjectStage\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\ProjectStage\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\ProjectStage\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\ProjectStage\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Task\Create.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Task\Delete.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Task\Details.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Task\Edit.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\TeamLead\Views\Task\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

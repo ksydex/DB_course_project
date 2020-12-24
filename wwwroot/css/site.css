@@ -3,10 +3,17 @@
     --indent-2: 12px;
     --indent-3: 20px;
     --indent-4: 40px;
+    
+    --table-color-faint: #f4f5f7;
+    --table-color: #c1c7d0;
+    
+    --table-header-height: 50px;
+    --table-column-width: 260px;
+    --table-bar-in-color: #8777d9;
 }
 
 * {
-    font-family: 'Fira Sans', sans-serif !important;
+    font-family: 'Inter', sans-serif !important;
     transition: 0.3s all;
 }
 
@@ -128,4 +135,96 @@ button > a:hover {
 
 .grid-categories {
     grid-template-columns: repeat(auto-fit, minmax(70px, max-content));
+}
+
+.project-map {
+    width: 100%;
+    border: 1px solid var(--table-color);
+    border-radius: 5px 5px 0 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.p-border-right {
+    border-right: 1px solid var(--table-color);
+}
+
+.p-border-right-bold {
+    border-right: 2px solid var(--table-color);
+}
+
+.p-border-bottom {
+    border-bottom: 1px solid var(--table-color);
+}
+
+.p-border-bottom-bold {
+    border-bottom: 2px solid var(--table-color);
+}
+
+.project-stage {
+    background: var(--table-color-faint);
+}
+
+.project-map__calendar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
+.project-map__line {
+    display: grid;
+    grid-template-columns: 25% 75%;
+}
+
+.project-map__line__sub {
+    display: grid;
+    grid-auto-rows: 40px;
+}
+
+.project-map__header {
+    height: var(--table-header-height);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--indent-3);
+    background: var(--table-color-faint);
+    border-bottom: 1px solid var(--table-color);
+}
+
+.contract-stage__title {
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.project-stage-bar {
+    height: 100%;
+}
+.project-stage-bar--in {
+    background: var(--table-bar-in-color);
+    border-radius: 3px;
+    position: relative;
+}
+
+.project-stage-bar--in:hover > .project-stage-bar__date {
+    opacity: 1;
+}
+
+.project-stage-bar__date {
+    font-size: 12px;
+    color: var(--dark);
+    line-height: 2;
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.no-right-border-radius{
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.no-left-border-radius{
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
 }

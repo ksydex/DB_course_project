@@ -36,4 +36,10 @@ namespace ContractAndProjectManager.Entities
     }
     
     public class TaskStatusHistory : StatusHistory<TaskStatus, Task> {}
+    
+    // DROP TRIGGER IF EXISTS Task_INSERT
+    // ON "Tasks";
+    // CREATE TRIGGER Task_INSERT
+    // AFTER INSERT ON "Tasks"
+    // FOR EACH ROW EXECUTE PROCEDURE add_status_to_entity_trigger("Task", 4);
 }

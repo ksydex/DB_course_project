@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Task = System.Threading.Tasks.Task;
 
-namespace ContractAndProjectManager.Areas.TeamLead.Controllers
+namespace ContractAndProjectManager.Areas.Project.Controllers
 {
-    [Authorize(Roles = Role.Keys.TeamLead)]
-    [Area("TeamLead")]
+    [Authorize(Roles = Role.Keys.TeamLead + "," + Role.Keys.Employee)]
+    [Area("Project")]
     public class ProjectController : Controller
     {
         private readonly UserService _userService;

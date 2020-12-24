@@ -13,10 +13,10 @@ using Microsoft.CodeAnalysis;
 using Task = ContractAndProjectManager.Entities.Task;
 using TaskStatus = ContractAndProjectManager.Entities.TaskStatus;
 
-namespace ContractAndProjectManager.Areas.TeamLead.Controllers
+namespace ContractAndProjectManager.Areas.Project.Controllers
 {
     [Authorize(Roles = Role.Keys.TeamLead)]
-    [Area("TeamLead")]
+    [Area("Project")]
     public class TaskController : Controller
     {
         private readonly ApplicationContext _context;
@@ -77,12 +77,6 @@ namespace ContractAndProjectManager.Areas.TeamLead.Controllers
             if (ModelState.IsValid)
             {
                 _context.Add(task);
-                await _context.SaveChangesAsync();
-                await _context.TaskStatusHistories.AddAsync(new TaskStatusHistory
-                {
-                    EntityId = task.Id,
-                    StatusId = TaskStatus.Pending.Id
-                });
                 await _context.SaveChangesAsync();
                 return RedirectToProjectById((await _context.ProjectStages.FindAsync(task.StageId)).ProjectId);
             }

@@ -77,14 +77,6 @@ namespace ContractAndProjectManager.Areas.Customer.Controllers
                 request.CustomerId = _userService.UserId;
                 _db.Add(request);
                 await _db.SaveChangesAsync();
-
-                await _db.RequestStatusHistories.AddAsync(new RequestStatusHistory
-                {
-                    EntityId = request.Id,
-                    StatusId = RequestStatus.Pending.Id
-                });
-                
-                await _db.SaveChangesAsync();
                 
                 return RedirectToAction(nameof(Index));
             }

@@ -10,10 +10,10 @@ using ContractAndProjectManager.Data;
 using ContractAndProjectManager.Entities;
 using Microsoft.AspNetCore.Authorization;
 
-namespace ContractAndProjectManager.Areas.TeamLead.Controllers
+namespace ContractAndProjectManager.Areas.Project.Controllers
 {
     [Authorize(Roles = Role.Keys.TeamLead)]
-    [Area("TeamLead")]
+    [Area("Project")]
     public class ProjectStageController : Controller
     {
         private readonly ApplicationContext _context;

@@ -43,4 +43,10 @@ namespace ContractAndProjectManager.Entities
     }
     
     public class ProjectStatusHistory: StatusHistory<ProjectStatus, Project> {}
+    
+    // DROP TRIGGER IF EXISTS Project_INSERT
+    // ON "Projects";
+    // CREATE TRIGGER Project_INSERT
+    // AFTER INSERT ON "Projects"
+    // FOR EACH ROW EXECUTE PROCEDURE add_status_to_entity_trigger("Project", 16);
 }

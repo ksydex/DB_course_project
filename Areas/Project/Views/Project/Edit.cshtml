@@ -1,0 +1,246 @@
+﻿@using ContractAndProjectManager.Entities
+@using ContractAndProjectManager.Data
+@using ContractAndProjectManager.Helpers
+@using ContractAndProjectManager.Models
+@using System.Globalization
+@model ContractAndProjectManager.Entities.Project
+@inject ApplicationContext DbContext;
+
+@functions
+{
+    private static string GetNameFromNum(int num, bool complete)
+    {
+        var name = (new DateTime(2010, num, 1)
+            .ToString(complete ? "MMMM" : "MMM", new CultureInfo("ru")) + (complete ? "" : "."));
+        return name.First().ToString().ToUpper() + name.Substring(1);
+    }
+
+    public static bool Between(DateTime input, DateTime date1, DateTime date2)
+    {
+        return (input > date1 && input < date2);
+    }
+}
+
+@{
+    var projectStatuses = SelectListHelpers.CreateSelectList(ProjectStatus.All, x => new SelectListModel
+    {
+        Id = x.Id,
+        Title = x.Name
+    }, Model.Status?.StatusId ?? 0);
+    var startDate = Model.Contract.Stages.Where(x => x.DateStart != null).Min(x => x.DateStart) ?? Model.DateStart ?? Model.Contract.DateStart ?? DateTime.Now;
+    var endDate = Model.Contract.Stages.Where(x => x.DateDeadLine != null).Max(x => x.DateDeadLine) ?? Model.DateDeadLine ?? Model.Contract.DateDeadLine ?? DateTime.Now.Add(TimeSpan.FromDays(31));
+    var completeNames = (endDate - startDate).TotalDays / 31 <= 3;
+    var months = new List<MonthModel>();
+    var mn = startDate.Month;
+    var year = startDate.Year;
+    while (mn != (endDate.Month == 12 ? 0 : endDate.Month) + 1)
+    {
+        var day = 0;
+        if (mn != startDate.Month && mn != endDate.Month)
+        {
+            day = 1;
+        }
+        else if (mn == startDate.Month)
+        {
+            day = startDate.Day;
+        }
+        else if (mn == endDate.Month)
+        {
+            day = endDate.Day;
+        }
+        months.Add(new MonthModel { Name = GetNameFromNum(mn, completeNames), Date = new DateTime(year, mn, day) });
+        if (mn == 12)
+        {
+            mn = 1;
+            year++;
+        }
+        else
+        {
+            mn++;
+        }
+    }
+
+}
+
+<div class="mb-3">
+    <div class="d-flex justify-content-between align-items-start mb-4" style="font-size: 14px">
+        <div >
+            <div class="d-flex">
+                <a asp-action="Index" class="text m-0">Мои проекты</a>
+                <p class="text m-0 mx-2">/</p>
+                <p class="text m-0" style="font-weight: 500">@Model.Name</p>
+            </div>
+            @if (Model.Description != null)
+            {
+                <p class="text m-0" style="opacity: 0.8">@Model.Description</p>
+            }
+        </div>
+        <div class="d-flex flex-column align-items-end">
+            <p class="text m-0">Дата начала: @DateHelpers.DateFormat(Model.DateStart ?? Model.DateCreated, true)</p>
+            @if (Model.DateDeadLine != null)
+            {
+                <p class="text m-0">Дата окончания: @DateHelpers.DateFormat(Model.DateDeadLine.Value, true)</p>
+            }
+        </div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <h4>Дорожная карта</h4>
+        <form asp-area="Project" asp-controller="Project" asp-action="SetStatus">
+            <input hidden name="projectId" value="@Model.Id"/>
+            <input hidden name="returnToHome" value="true"/>
+            <select onchange="this.form.submit()" style="border-color: @Model.Status?.Status.Color" name="statusId" class="custom-select" asp-items="projectStatuses"></select>
+        </form>
+    </div>
+</div>
+
+<div class="project-map">
+    <div class="project-map__line">
+        <div class="project-map__header p-border-right-bold">Этапы</div>
+        <div class="project-map__calendar">
+            @foreach (var item in months)
+            {
+                <div class="project-map__header  @(item.Name == months.Last().Name ? "" : "p-border-right")" style="@(completeNames ? "justify-content: center" : "")">
+                    @item.Name
+                </div>
+            }
+        </div>
+    </div>
+    @foreach (var contractStage in Model.Contract.Stages)
+    {
+        <div class="project-map__line">
+            <div class="contract-stage p-border-right-bold project-map__line__sub">
+                <div class="contract-stage__title p-2">
+                    @contractStage.Title
+                </div>
+                @foreach (var projectStage in contractStage.ProjectStages)
+                {
+                    var isLast = projectStage.Id == contractStage.ProjectStages.Last().Id;
+                    <div class="project-stage p-2 @(isLast ? "p-border-bottom" : "")">
+                        <span >@projectStage.Title</span>
+                    </div>
+                }
+            </div>
+            <div class="project-map__calendar">
+                @{
+                    var startDay = 1;
+                    var endDay = 0;
+                    var idx = 1;
+                }
+                @foreach (var month in months)
+                {
+                    var toAdd = DateTime.DaysInMonth(month.Date.Year, month.Date.Month);
+                    if (idx != 1)
+                    {
+                        startDay += toAdd;
+                    }
+                    endDay += toAdd;
+                    idx++;
+
+                    <div class="project-map__line__sub @(month.Name == months.Last().Name ? "" : "p-border-right")">
+                        <div class="contract-stage__title p-2"></div>
+                        @foreach (var projectStage in contractStage.ProjectStages)
+                        {
+                            var isLast = projectStage.Id == contractStage.ProjectStages.Last().Id;
+                            var sd = projectStage.DateStart;
+                            var ed = projectStage.DateDeadLine;
+
+                            <div class="d-flex project-stage py-2 @(isLast ? "p-border-bottom" : "")">
+                                @if (ed != null && sd != null && ((month.Date.Month == sd.Value.Month && month.Date.Month == ed.Value.Month) || (sd.Value >= month.Date || sd.Value <= month.Date) && ed.Value >= month.Date))
+                                {
+                                    var daysBeforeStart = (projectStage.DateStart.Value - new DateTime(startDate.Year, startDate.Month, 1).Date).Days;
+                                    var daysBeforeEnd = (projectStage.DateDeadLine.Value - new DateTime(startDate.Year, startDate.Month, 1).Date).Days;
+
+                                    var daysInMonth = DateTime.DaysInMonth(month.Date.Year, month.Date.Month);
+
+                                    var daysBeforeStartScoped = daysBeforeStart < startDay && daysBeforeEnd > startDay ? 1 : (daysBeforeEnd < startDay ? 0 : daysBeforeStart);
+                                    var daysBeforeEndScoped = daysBeforeEnd > endDay && daysBeforeStart < endDay ? daysInMonth : (daysBeforeStart > endDay ? 0 : ed.Value.Month == sd.Value.Month ? daysBeforeEnd : daysBeforeEnd - endDay);
+
+
+                                    var beforePercent = ((double) daysBeforeStartScoped / daysInMonth) * 100;
+                                    var afterPercent = 100 - ((double) daysBeforeEndScoped / daysInMonth) * 100;
+                                    var inPercent = 100 - (beforePercent + afterPercent);
+
+                                    var toNextMonth = daysBeforeEnd > endDay;
+                                    var fromPreviousMonth = daysBeforeStart < startDay;
+
+                                    if (toNextMonth)
+                                    {
+                                        inPercent += afterPercent;
+                                    }
+                                    if (fromPreviousMonth)
+                                    {
+                                        inPercent += beforePercent;
+                                    }
+                                    
+                                    @if (!fromPreviousMonth)
+                                    {
+                                        <div class=
+                                             "project-stage-bar"
+                                             style="width: @beforePercent.ToString("0.000", CultureInfo.InvariantCulture)%">
+                                        </div>
+                                    }
+                                    <div class="d-flex px-2 justify-content-between project-stage-bar project-stage-bar--in  @(toNextMonth ? "no-right-border-radius" : "") @(fromPreviousMonth ? "no-left-border-radius" :"")" style="width: @inPercent.ToString("0.000", CultureInfo.InvariantCulture)%">
+                                        <p class="project-stage-bar__date m-0"
+                                           style="left: -70px;">
+                                            @DateHelpers.DateFormat(sd.Value, true)
+                                        </p>
+                                        <p class="project-stage-bar__date m-0"
+                                           style="right: -70px">
+                                            @DateHelpers.DateFormat(ed.Value, true)
+                                        </p>
+                                    </div>
+                                    @if (toNextMonth)
+                                    {
+                                        <div class="project-stage-bar" style="width: @afterPercent.ToString("0.000", CultureInfo.InvariantCulture)%"></div>
+                                    }
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    <div class="project-map__line h-100">
+        <div class="p-border-right-bold"></div>
+        <div></div>
+    </div>
+</div>
+
+
+<style>
+    .navbar {
+        padding: 0;
+        margin: 0 !important;
+    }
+    .container {
+        max-width: 1920px;
+        height: 100%;
+        padding: var(--indent-3);
+    }
+    
+    
+    .navbar > .container {
+        padding-top: var(--indent-1);
+        padding-bottom: var(--indent-1);
+    }
+    
+    body {
+        height: 100vh;
+        overflow: hidden;
+    }
+    
+    body, html {
+        margin: 0;
+        padding: 0;
+    }
+    
+    footer {
+        display: none;
+    }
+    
+    main {
+        height: 100%;
+    }
+   
+</style>

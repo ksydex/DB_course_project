@@ -36,4 +36,10 @@ namespace ContractAndProjectManager.Entities
     }
     
     public class RequestStatusHistory: StatusHistory<RequestStatus, Request> {}
+    
+    // DROP TRIGGER IF EXISTS Requests_INSERT
+    // ON "Requests";
+    // CREATE TRIGGER Requests_INSERT
+    // AFTER INSERT ON "Requests"
+    // FOR EACH ROW EXECUTE PROCEDURE add_status_to_entity_trigger("Request", 1);
 }

@@ -87,12 +87,7 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
                 _context.Add(contract);
                 await _context.SaveChangesAsync();
 
-                // TODO: to service
-                await _context.ContractStatusHistories.AddAsync(new ContractStatusHistory
-                {
-                    EntityId = contract.Id,
-                    StatusId = ContractStatus.Pending.Id
-                });
+                
                 await _context.RequestStatusHistories.AddAsync(new RequestStatusHistory
                 {
                     EntityId = contract.RequestId,

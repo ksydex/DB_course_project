@@ -25,4 +25,15 @@ namespace ContractAndProjectManager.Infrastructure.AbstractClasses
             DateCreated = DateTime.UtcNow;
         }
     }
+    
+    // CREATE OR REPLACE FUNCTION add_status_to_entity_trigger()
+    // RETURNS TRIGGER
+    // AS $$
+    // BEGIN
+    // EXECUTE 'INSERT INTO "' || TG_ARGV[0] || 
+    // 'StatusHistories"("StatusId", "EntityId", "DateCreated") VALUES 
+    // ('|| TG_ARGV[1] || ', ' || NEW."Id" || ', CURRENT_TIMESTAMP);';
+    // RETURN NEW;
+    // END;$$
+    // LANGUAGE plpgsql;
 }
