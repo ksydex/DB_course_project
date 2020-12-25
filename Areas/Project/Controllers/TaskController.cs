@@ -27,7 +27,7 @@ namespace ContractAndProjectManager.Areas.Project.Controllers
         }
         
         private IActionResult RedirectToProjectById(int id) =>
-            RedirectToAction("Edit", "Project", new { Area = "TeamLead", id });
+            RedirectToAction("Edit", "Project", new { Area = "Project", id });
 
         // GET: Task
         public async Task<IActionResult> Index()

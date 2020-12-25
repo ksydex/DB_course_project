@@ -22,6 +22,8 @@ namespace ContractAndProjectManager.Entities
         
         public virtual List<ProjectStage> ProjectStages { get; set; }
 
+        [NotMapped] public string Key => Id.ToString(); 
+
         public ContractStage()
         {
             DateCreated = DateTime.UtcNow;

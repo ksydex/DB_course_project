@@ -14,8 +14,8 @@ namespace ContractAndProjectManager.Entities
 
         public DateTime DateCreated { get; set; }
 
-        public DateTime? DateStart => ContractStage?.DateStart;
-        public DateTime? DateDeadLine => ContractStage?.DateDeadLine;
+        public DateTime? DateStart { get; set; }
+        public DateTime? DateDeadLine { get; set; }
         public DateTime? DateEnd => ContractStage?.DateEnd;
 
         public int ProjectId { get; set; }
@@ -28,6 +28,8 @@ namespace ContractAndProjectManager.Entities
         
         public int ContractStageId { get; set; }
         public virtual ContractStage ContractStage { get; set; }
+        
+        [NotMapped] public string Key => ContractStageId +  Id.ToString(); 
 
         public ProjectStage()
         {

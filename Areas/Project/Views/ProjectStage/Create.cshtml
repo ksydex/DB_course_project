@@ -26,8 +26,17 @@
                 <input asp-for="Description" class="form-control"/>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="DateStart" class="control-label"></label>
+                <input asp-for="DateStart" class="form-control"/>
+                <span asp-validation-for="DateStart" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateDeadLine" class="control-label"></label>
+                <input asp-for="DateDeadLine" class="form-control"/>
+                <span asp-validation-for="DateDeadLine" class="text-danger"></span>
+            </div>
             <input hidden asp-for="ProjectId" class="form-control" value="@contractStage?.Contract.Project.Id"/>
-
             <div class="form-group">
                 <label asp-for="ExecutorId" class="control-label"></label>
                 <select asp-for="ExecutorId" class="form-control" asp-items="ViewBag.ExecutorId"></select>

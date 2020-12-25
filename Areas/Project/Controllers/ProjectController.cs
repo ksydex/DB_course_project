@@ -25,6 +25,7 @@ namespace ContractAndProjectManager.Areas.Project.Controllers
         }
         
         [HttpPost]
+        [Authorize(Roles = Role.Keys.TeamLead)]
         public async Task<IActionResult> SetStatus(int projectId, int statusId)
         {
             var project = await _context.Projects.FindAsync(projectId);
@@ -40,7 +41,7 @@ namespace ContractAndProjectManager.Areas.Project.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Edit", "Project", new {Area = "TeamLead", id = project.Id});
+            return RedirectToAction("Edit", "Project", new {Area = "Project", id = project.Id});
         }
 
         public async Task<IActionResult> Index()

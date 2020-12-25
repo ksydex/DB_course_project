@@ -4,15 +4,17 @@
     --indent-3: 20px;
     --indent-4: 40px;
     
-    --table-color-faint: #f4f5f7;
+    --table-color-fainter: #f4f5f7;
+    --table-color-faint: #d5dbe3;
     --table-color: #c1c7d0;
     
     --table-header-height: 50px;
     --table-column-width: 260px;
     --table-bar-in-color: #8777d9;
+    --table-bar-in-color-darken: #7a6ac4; 
 }
 
-* {
+*:not(.fa):not(.fas):not(.far) {
     font-family: 'Inter', sans-serif !important;
     transition: 0.3s all;
 }
@@ -143,6 +145,11 @@ button > a:hover {
     border-radius: 5px 5px 0 0;
     height: 100%;
     overflow: hidden;
+    position: relative;
+}
+
+.project-map > * {
+    cursor: default;
 }
 
 .p-border-right {
@@ -162,17 +169,29 @@ button > a:hover {
 }
 
 .project-stage {
-    background: var(--table-color-faint);
+    background: var(--table-color-fainter);
+    font-size: 14px;
+}
+
+.project-stage, .contract-stage__title {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.project-stage[onclick] {
+    cursor: pointer;
 }
 
 .project-map__calendar {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    position: relative;
 }
 
 .project-map__line {
     display: grid;
-    grid-template-columns: 25% 75%;
+    grid-template-columns: 25% 1fr;
 }
 
 .project-map__line__sub {
@@ -185,7 +204,7 @@ button > a:hover {
     display: flex;
     align-items: center;
     padding: 0 var(--indent-3);
-    background: var(--table-color-faint);
+    background: var(--table-color-fainter);
     border-bottom: 1px solid var(--table-color);
 }
 
@@ -196,22 +215,35 @@ button > a:hover {
     align-items: center;
 }
 
+.contract-stage__title[onclick] {
+    cursor: pointer;
+}
+
 .project-stage-bar {
     height: 100%;
 }
-.project-stage-bar--in {
+.project-stage-bar__in {
     background: var(--table-bar-in-color);
     border-radius: 3px;
     position: relative;
+    cursor: pointer;
 }
 
-.project-stage-bar--in:hover > .project-stage-bar__date {
+.project-stage-bar__in--selected {
+    background: var(--table-bar-in-color-darken);
+}
+
+.project-stage-bar__in--selected .project-stage-bar__date {
     opacity: 1;
 }
 
 .project-stage-bar__date {
     font-size: 12px;
     color: var(--dark);
+    background: var(--light);
+    padding: 0 var(--indent-1);
+    border: 1px solid var(--table-bar-in-color);
+    border-radius: 5px;
     line-height: 2;
     position: absolute;
     opacity: 0;
@@ -227,4 +259,88 @@ button > a:hover {
 .no-left-border-radius{
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
+}
+
+.project_stage-bar__date-mark {
+    content: '';
+    width: 5px;
+    border-radius: 2px;
+    opacity: 0;
+    background: #00000033;
+}
+
+.contract-stage-bar__date {
+    font-size: 12px;
+    color: var(--dark);
+    padding: 0 var(--indent-1);
+    border-radius: 5px;
+    line-height: 2;
+}
+
+.project-stage-bar__in--selected .project_stage-bar__date-mark {
+    opacity: 1;
+}
+
+.p-line {}
+
+.p-line--selected {
+    background: var(--table-color-faint);
+}
+
+.project-map__calendar__contract-stage-bar--in {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    content: '';
+    background: #6a8bc422;
+    border-radius: 5px;
+    border: 1px dashed #6a8bc455;
+    cursor: pointer;
+}
+
+.project-map__calendar__contract-stage-bar--in:hover {
+    border-style: solid;
+    background: #6a8bc433;
+    border-color: #6a8bc477;
+}
+
+.info-card {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    background: white;
+    border-left: 1px solid var(--table-color);
+    box-shadow: 0 0 20px var(--table-color);
+    z-index: 2;
+}
+
+.text-sm {
+    font-size: 14px;
+    color: #5b6975;
+    margin: 0;
+}
+
+.contract-stage-card {
+    border-color: var(--table-bar-in-color);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.contract-stage-card:hover {
+    background: #7a6ac433;
+}
+
+.contract-stage-card:hover > p {
+    color: var(--table-bar-in-color-darken) !important;
+}
+
+.project-task-card {
+    border-color: #d3d3d3;
+    cursor: pointer;
+}
+
+.project-task-card:hover {
+    background: #D3D3D333;
 }

@@ -9,7 +9,7 @@ using TaskStatus = ContractAndProjectManager.Entities.TaskStatus;
 
 namespace ContractAndProjectManager.Areas.Employee.Controllers
 {
-    [Authorize(Roles = Role.Keys.Employee )]
+    [Authorize(Roles = Role.Keys.Employee + "," + Role.Keys.TeamLead)]
     [Area("Employee")]
     public class TaskController: Controller
     {
@@ -29,7 +29,7 @@ namespace ContractAndProjectManager.Areas.Employee.Controllers
         {
             var task = await _context.Tasks.FindAsync(taskId);
             var status = await _context.TaskStatuses.FindAsync(statusId);
-            if (task == null || status == null || task.ExecutorId != _userService.UserId || task.Stage.Project.TeamId != _userService.User.TeamId)
+            if (task == null || status == null || task.Stage.Project.TeamId != _userService.User.TeamId)
                 return BadRequest();
 
             await _context.TaskStatusHistories.AddAsync(new TaskStatusHistory
@@ -45,7 +45,7 @@ namespace ContractAndProjectManager.Areas.Employee.Controllers
 
             await _context.SaveChangesAsync();
 
-            return returnToHome ? ReturnToHome() : Ok(); // change
+            return returnToHome ? ReturnToHome() : RedirectToAction("Edit", "Project", new {Area = "Project", id = task.Stage.ProjectId}); // change
         }
     }
 }

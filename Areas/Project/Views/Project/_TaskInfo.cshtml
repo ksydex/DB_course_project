@@ -1,0 +1,68 @@
+﻿@using ContractAndProjectManager.Helpers
+@using Microsoft.EntityFrameworkCore
+@using ContractAndProjectManager.Data
+@using ContractAndProjectManager.Models
+@using TaskStatus = ContractAndProjectManager.Entities.TaskStatus
+@model ContractAndProjectManager.Entities.Task
+@inject ApplicationContext DbContext;
+
+@{
+    var taskStatuses = SelectListHelpers.CreateSelectList(TaskStatus.All, x => new SelectListModel
+    {
+        Id = x.Id,
+        Title = x.Name
+    }, Model.Status?.StatusId ?? 0);
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <p class="text-sm">Задача</p>
+    <div class="d-flex">
+        <a asp-area="Project" asp-controller="Task" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-sm btn-light mr-2">
+            <i class="far fa-edit"></i>
+        </a>
+        <button onclick="toggleInfoCard()" class="btn btn-light btn-sm">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+
+<div class="mt-2">
+    <h4 class="text-dark">@Model.Title</h4>
+    @if (Model.Description != null)
+    {
+        <p class="text-sm text-dark" style="font-weight: 600">Описание</p>
+        <p class="text-sm">@Model.Description</p>
+    }
+</div>
+
+<form class="mt-3" asp-area="Employee" asp-controller="Task" asp-action="SetStatus">
+            <input hidden name="taskId" value="@Model.Id"/>
+            <input hidden name="returnToHome" value="false"/>
+            <select onchange="this.form.submit()" style="width: max-content; border-color: @Model.Status?.Status.Color" name="statusId" class="custom-select" asp-items="taskStatuses"></select>
+        </form>
+
+<div class="mt-3">
+    @if (Model.ExecutorId != null)
+    {
+        <div class="d-flex align-items-center">
+            <p class="text-sm text-dark mr-3" style="font-weight: 600">Исполнитель</p>
+            <p class="text-sm text-dark ">@Model.Executor?.Name</p>
+        </div>
+    }
+    
+    @if (Model.DateStart != null)
+    {
+        <div class="mt-2 d-flex align-items-center">
+            <p class="text-sm text-dark mr-3" style="font-weight: 600">Дата начала</p>
+            <p class="text-sm text-dark ">@DateHelpers.DateFormat(Model.DateStart.Value, true)</p>
+        </div>
+    }
+
+    @if (Model.DateDeadLine != null)
+    {
+        <div class="mt-2 d-flex align-items-center">
+            <p class="text-sm text-dark mr-3" style="font-weight: 600">Дата окончания</p>
+            <p class="text-sm text-dark ">@DateHelpers.DateFormat(Model.DateDeadLine.Value, true)</p>
+        </div>
+    }
+</div>
