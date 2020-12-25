@@ -173,7 +173,7 @@ button > a:hover {
     font-size: 14px;
 }
 
-.project-stage, .contract-stage__title {
+.project-stage[onclick], .contract-stage__title {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
