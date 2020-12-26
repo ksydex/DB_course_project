@@ -146,6 +146,7 @@ button > a:hover {
     height: 100%;
     overflow: hidden;
     position: relative;
+    margin-bottom: calc(-1*(1rem + 1px));
 }
 
 .project-map > * {
@@ -314,6 +315,7 @@ button > a:hover {
     border-left: 1px solid var(--table-color);
     box-shadow: 0 0 20px var(--table-color);
     z-index: 2;
+    overflow: auto;
 }
 
 .text-sm {
@@ -343,4 +345,73 @@ button > a:hover {
 
 .project-task-card:hover {
     background: #D3D3D333;
+}
+
+.project-history {
+    position: relative;
+}
+
+.project-history > * {
+    cursor: default;
+}
+
+.project-card-popup {
+    z-index: 3;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 350px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 5px 20px #343A4022;
+    border: solid 1px var(--table-color);
+    transition: opacity 1s ease-in-out;
+}
+
+.project-history__card {
+}
+
+.project-analytics {
+    left: 0 !important;
+    right: unset !important;
+}
+
+.project .navbar {
+    padding: 0;
+    margin: 0 !important;
+}
+.project .container {
+    max-width: 100%;
+    height: 100%;
+    padding: var(--indent-3);
+    padding-bottom: 0;
+}
+
+
+.project .navbar > .container {
+    padding-top: var(--indent-1);
+    padding-bottom: var(--indent-1);
+}
+
+.project body {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.project body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.project footer {
+    display: none;
+}
+
+.project main {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    margin-bottom: -1rem;
 }

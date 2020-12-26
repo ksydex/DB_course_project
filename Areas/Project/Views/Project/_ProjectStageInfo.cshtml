@@ -3,6 +3,7 @@
 @using ContractAndProjectManager.Data
 @using ContractAndProjectManager.Entities
 @using TaskStatus = ContractAndProjectManager.Entities.TaskStatus
+@using System.Globalization
 @model ContractAndProjectManager.Entities.ProjectStage
 @inject ApplicationContext DbContext;
 
@@ -12,8 +13,11 @@
 }
 
 
-<div class="d-flex justify-content-between align-items-center">
-    <p class="text-sm" style="color: var(--primary)">Этап проекта</p>
+<div class="d-flex justify-content-between align-items-start">
+    <div>
+        <a onclick="toggleInfoCard('@("cs"+Model.ContractStageId)')" class="text-sm text-warning" style="cursor: pointer">@Model.ContractStage.Title</a>
+        <p class="text-sm text-primary"><i class="fas fa-angle-double-right"></i> Этап проекта</p>
+    </div>
     <div class="d-flex">
         @if (isTeamLead)
         {
@@ -54,7 +58,7 @@
                 @foreach (var statusType in TaskStatus.All)
                 {
                     var percent = (double) Model.Tasks.Count(x => x.Status?.StatusId == statusType.Id) / Model.Tasks.Count * 100;
-                    <div style="background: @statusType.Color; width: @percent%; height: 100%"></div>
+                    <div style="background: @statusType.Color; width: @percent.ToString("0.000", CultureInfo.InvariantCulture)%; height: 100%"></div>
                 }
 
             </div>

@@ -9,11 +9,11 @@
     var bDefault = new RouteValue { Area = "Auth", Controller = "Home" };
     var baseUrlValues = user != null ? Role.All.FirstOrDefault(x => x.Id == UserService.User.RoleId)?.LogInRouteValues ?? bDefault :
         bDefault;
-
+    
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="@ViewData["appendBodyClass"]">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>

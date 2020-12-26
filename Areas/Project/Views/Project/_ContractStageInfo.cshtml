@@ -2,6 +2,7 @@
 @using ContractAndProjectManager.Data
 @using ContractAndProjectManager.Entities
 @using TaskStatus = ContractAndProjectManager.Entities.TaskStatus
+@using System.Globalization
 @model ContractAndProjectManager.Entities.ContractStage
 
 @{
@@ -43,7 +44,7 @@
                  onmouseleave="toggleBarAndLine('@stage.Id', '@stage.Key',false)"
                  class="list-group-item p-0 contract-stage-card">
                 <div class="d-flex p-2 justify-content-between align-items-center">
-                    <div class="w-100 pr-2 d-flex flex-column justify-content-between">
+                    <div class="w-100 d-flex flex-column justify-content-between">
                         <p class="text m-0 text-dark" style="font-size: 15px; font-weight: 500">@stage.Title</p>
                         @if (tasks.Count > 0)
                         {
@@ -52,7 +53,7 @@
                                 @foreach (var statusType in TaskStatus.All)
                                 {
                                     var percent = (double) tasks.Count(x => x.Status?.StatusId == statusType.Id) / tasks.Count * 100;
-                                    <div style="background: @statusType.Color; width: @percent%; height: 100%"></div>
+                                    <div style="background: @statusType.Color; width: @percent.ToString("0.000", CultureInfo.InvariantCulture)%; height: 100%"></div>
                                 }
 
                             </div>
@@ -61,7 +62,7 @@
                     <div>
                         @if (isTeamLead)
                         {
-                            <a asp-area="Project" asp-controller="ProjectStage" asp-action="Edit" asp-route-id="@stage.Id" class="btn btn-sm btn-light">
+                            <a asp-area="Project" asp-controller="ProjectStage" asp-action="Edit" asp-route-id="@stage.Id" class="btn btn-sm btn-light ml-2">
                                 <i class="far fa-edit"></i>
                             </a>
                         }

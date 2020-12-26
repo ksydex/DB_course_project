@@ -13,8 +13,10 @@
 }
 
 @{
+    ViewData["appendBodyClass"] = "project";
     ViewData["roleId"] = UserService.User.RoleId;
-    
+    var isTeamLead = UserService.User.RoleId == Role.TeamLead.Id;
+    var analytics = DbContext.ProjectAnalytics.FirstOrDefault(x => x.ProjectId == Model.Id);
     var currentYear = DateTime.Today.Year;
     var projectStatuses = SelectListHelpers.CreateSelectList(ProjectStatus.All, x => new SelectListModel
     {
@@ -22,8 +24,8 @@
         Title = x.Name
     }, Model.Status?.StatusId ?? 0);
 
-    var startDate = Model.Contract.Stages.Where(x => x.DateStart != null).Min(x => x.DateStart) ?? Model.DateStart ?? Model.Contract.DateStart ?? DateTime.Now;
-    var endDate = Model.Contract.Stages.Where(x => x.DateDeadLine != null).Max(x => x.DateDeadLine) ?? Model.DateDeadLine ?? Model.Contract.DateDeadLine ?? DateTime.Now.Add(TimeSpan.FromDays(31));
+    var startDate = Model.Contract.Stages.Where(x => x.DateStart != null).Min(x => x.DateStart) ?? Model.DateStart ?? Model.Contract.DateStart ?? DateTime.Today;
+    var endDate = Model.Contract.Stages.Where(x => x.DateDeadLine != null).Max(x => x.DateDeadLine) ?? Model.DateDeadLine ?? Model.Contract.DateDeadLine ?? DateTime.Today.Add(TimeSpan.FromDays(31));
 
     var completeNames = (endDate - startDate).TotalDays / 31 <= 3;
     var months = new List<MonthModel>();
@@ -36,13 +38,14 @@
         daysComplete += daysInMonth;
         months.Add(new MonthModel { Name = DateHelpers.GetNameFromMonthNumber(mn, completeNames) + (currentYear == year ? "" : $" '{year.ToString().TakeLast(2).Aggregate("", (acc, x) => acc + x)}"), Date = new DateTime(year, mn, 1), Days = daysInMonth, DaysStartOverall = daysComplete - daysInMonth, DaysEndOverall = daysComplete - 1 });
         mn = mn == 12 ? 1 : mn + 1;
-        if (mn == 1)
-        {
-            year++;
-        }
+
         if (mn == (endDate.Month == 12 ? 0 : endDate.Month) + 1 && year == endDate.Year)
         {
             break;
+        }
+        if (mn == 1)
+        {
+            year++;
         }
     }
 
@@ -74,6 +77,8 @@
             }
         }
     }
+
+    var statusHistories = Model.StatusHistory.OrderByDescending(x => x.Id).ToList();
 }
 
 <div class="mb-3">
@@ -98,12 +103,64 @@
         </div>
     </div>
     <div class="d-flex justify-content-between align-items-center">
-        <h4>Дорожная карта</h4>
-        <form asp-area="Project" asp-controller="Project" asp-action="SetStatus">
-            <input hidden name="projectId" value="@Model.Id"/>
-            <input hidden name="returnToHome" value="true"/>
-            <select onchange="this.form.submit()" style="border-color: @Model.Status?.Status.Color" name="statusId" class="custom-select" asp-items="projectStatuses"></select>
-        </form>
+        <div class="d-flex align-items-center">
+            <h4 class="m-0">Дорожная карта</h4>
+            <div onmouseenter="toggleAnalytics(true)" onmouseleave="toggleAnalytics(false)" class="ml-3 project-history">
+                <a class="btn btn btn-light btn-sm">Аналитика</a>
+                <div style="display: none" class="project-card-popup project-analytics">
+                    <p class="text-sm text-dark px-2 pt-2" style="font-weight: 600">Аналитика</p>
+                    <hr class="my-2"/>
+                    <div class="px-2 pb-2 pt-0">
+                        @if (analytics.TotalHours != null)
+                        {
+                            <div class="d-flex align-items-center">
+                                <p class="text-sm text-dark mr-3" style="font-weight: 600">Общее время</p>
+                                <p class="text-sm text-dark ">@analytics.TotalHours?.ToString("0.0") ч</p>
+                            </div>
+                        }
+                        <div class="mt-2 d-flex align-items-center">
+                            <p class="text-sm text-dark mr-3" style="font-weight: 600">Всего этапов</p>
+                            <p class="text-sm text-dark ">@analytics.StagesCount</p>
+                        </div>
+                        <div class="mt-2 d-flex align-items-center">
+                            <p class="text-sm text-dark mr-3" style="font-weight: 600">Всего задач</p>
+                            <p class="text-sm text-dark ">@analytics.TasksCount</p>
+                        </div>
+                        <div class="mt-2 d-flex align-items-center">
+                            <p class="text-sm text-dark mr-3" style="font-weight: 600">Активных сотрудников</p>
+                            <p class="text-sm text-dark ">@analytics.EmployeesCount</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="d-flex align-items-center">
+            <div onmouseenter="toggleProjectHistory(true)" onmouseleave="toggleProjectHistory(false)" class="project-history mr-3">
+                <a class="btn btn btn-light btn-sm">История</a>
+                <div style="display: none" class="project-card-popup project-history__card p-2">
+                    <p class="text-sm text-dark" style="font-weight: 600">История статуса</p>
+                    <div class="list-group mt-2">
+                        @foreach (var item in statusHistories)
+                        {
+                            <div style="background: @(item.Id == statusHistories.First().Id ? item.Status.Color + "33" : "")" class="list-group-item p-2 d-flex justify-content-between align-items-center">
+                                <div class="d-flex">
+                                    <div class="mr-2" style="width: 4px; background: @item.Status?.Color; content: ''; border-radius: 3px"></div>
+                                    <p class="text-sm text-dark">@item.Status?.Name</p>
+                                </div>
+                                <p class="text-sm" style="color: grey">@DateHelpers.DateFormat(item.DateCreated)</p>
+                            </div>
+                        }
+                    </div>
+
+                </div>
+            </div>
+            <form asp-area="Project" asp-controller="Project" asp-action="SetStatus">
+                <input hidden name="projectId" value="@Model.Id"/>
+                <input hidden name="returnToHome" value="true"/>
+                <select disabled="@(!isTeamLead)" onchange="this.form.submit()" style="border-color: @Model.Status?.Status.Color" name="statusId" class="custom-select" asp-items="projectStatuses"></select>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -287,41 +344,14 @@
          }   
      })
  }
+ 
+ function toggleProjectHistory(v) {
+    let el = document.querySelector('.project-history__card')
+    el.style.display = v ? 'block' : 'none'
+ }
+ 
+ function toggleAnalytics(v) {
+     let el = document.querySelector('.project-analytics')
+         el.style.display = v ? 'block' : 'none'
+ }
 </script>
-
-<style>
-    .navbar {
-        padding: 0;
-        margin: 0 !important;
-    }
-    .container {
-        max-width: 100%;
-        height: 100%;
-        padding: var(--indent-3);
-    }
-    
-    
-    .navbar > .container {
-        padding-top: var(--indent-1);
-        padding-bottom: var(--indent-1);
-    }
-    
-    body {
-        height: 100vh;
-        overflow: hidden;
-    }
-    
-    body, html {
-        margin: 0;
-        padding: 0;
-    }
-    
-    footer {
-        display: none;
-    }
-    
-    main {
-        height: 100%;
-    }
-   
-</style>
