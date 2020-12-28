@@ -56,7 +56,7 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
         // GET: ContractStage/Create
         public IActionResult Create([FromQuery] int contractId = default)
         {
-            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", contractId);
+            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Title", contractId);
             ViewData["ContractIdSet"] = contractId != default;
             return View();
         }
@@ -90,7 +90,7 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
             {
                 return NotFound();
             }
-            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", contractStage.ContractId);
+            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Title", contractStage.ContractId);
             return View(contractStage);
         }
 
@@ -126,7 +126,7 @@ namespace ContractAndProjectManager.Areas.Planner.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Id", contractStage.ContractId);
+            ViewData["ContractId"] = new SelectList(_context.Contracts, "Id", "Title", contractStage.ContractId);
             return View(contractStage);
         }
 

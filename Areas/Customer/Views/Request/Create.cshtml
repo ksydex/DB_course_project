@@ -1,10 +1,10 @@
 @model ContractAndProjectManager.Entities.Request
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Новая запись";
 }
 
-<h1>Create</h1>
+<h1>Новая запись</h1>
 
 <h4>Request</h4>
 <hr />
@@ -18,7 +18,7 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
+                <label asp-for="Description" class="control-label">Примечание</label>
                 <textarea asp-for="Description" class="form-control" rows="5"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
@@ -28,7 +28,7 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateDeadLine" class="control-label"></label>
+                <label asp-for="DateDeadLine" class="control-label">Дата окончания</label>
                 <input asp-for="DateDeadLine" type="date" class="form-control" />
                 <span asp-validation-for="DateDeadLine" class="text-danger"></span>
             </div>
@@ -40,6 +40,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад к списку</a>
 </div>
 

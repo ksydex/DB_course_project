@@ -32,7 +32,10 @@ namespace ContractAndProjectManager.Entities
 
         [NotMapped]
         public RequestStatusHistory Status => StatusHistory?.OrderByDescending(x => x.Id)
-            .FirstOrDefault();
+            .FirstOrDefault() ?? new RequestStatusHistory
+        {
+            Status = RequestStatus.Pending
+        };
 
         public virtual List<RequestStatusHistory> StatusHistory { get; set; }
 

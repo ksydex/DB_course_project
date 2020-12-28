@@ -9,7 +9,7 @@
         public int EmployeesCount { get; set; }
     }
 }
-
+// SQL script
 // CREATE OR REPLACE VIEW "ProjectStageAnalytics" AS
 // SELECT a."Id" AS "ProjectStageId", 
 //

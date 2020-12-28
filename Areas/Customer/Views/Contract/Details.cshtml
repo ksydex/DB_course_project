@@ -6,7 +6,7 @@
 @inject ApplicationContext DbContext;
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробнее";
     var analytics = await DbContext.ContractsAnalytics.FirstOrDefaultAsync(x => x.ContractId == Model.Id);
 }
 
@@ -86,6 +86,6 @@
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">Назад к списку</a>
 </div>

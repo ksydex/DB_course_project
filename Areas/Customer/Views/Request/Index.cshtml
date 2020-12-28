@@ -46,9 +46,9 @@
                         @item.Title
                     </h3>
                     <div>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Подробнее</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
                     </div>
                     <div class="grid-default grid-default-2 mb-2">
                         <p class="m-0">@DateHelpers.DateFormat(item.DateCreated)</p>

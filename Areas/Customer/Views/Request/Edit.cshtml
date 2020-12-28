@@ -1,10 +1,10 @@
 @model ContractAndProjectManager.Entities.Request
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирование";
 }
 
-<h1>Edit</h1>
+<h1>Редактирование</h1>
 
 <h4>Request</h4>
 <hr />
@@ -19,7 +19,7 @@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                            <label asp-for="Description" class="control-label"></label>
+                            <label asp-for="Description" class="control-label">Примечание</label>
                             <textarea asp-for="Description" class="form-control" rows="5"></textarea>
                             <span asp-validation-for="Description" class="text-danger"></span>
                         </div>
@@ -29,19 +29,19 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateDeadLine" class="control-label"></label>
-                <input asp-for="DateDeadLine" class="form-control" />
+                <label asp-for="DateDeadLine" class="control-label">Дата окончания</label>
+                <input type="date" asp-for="DateDeadLine" class="form-control" />
                 <span asp-validation-for="DateDeadLine" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="CustomerId" />
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад к списку</a>
 </div>
 

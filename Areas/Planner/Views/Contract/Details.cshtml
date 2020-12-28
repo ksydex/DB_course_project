@@ -7,7 +7,7 @@
 
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробнее";
     var analytics = await DbContext.ContractsAnalytics.FirstOrDefaultAsync(x => x.ContractId == Model.Id);
 }
 
@@ -53,9 +53,12 @@
                         <div class="card-header text-primary py-2">
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="text m-0">@stage.Title</p>
-                                <button class="btn btn-light">
-                                    <a class="text-danger" asp-area="Planner" asp-controller="ContractStage" asp-action="Delete" asp-route-id="@stage.Id">Удалить</a>
-                                </button>
+                                <div class="d-flex">
+                                    <a class="btn btn-light text-info" asp-area="Planner" asp-controller="ContractStage" asp-action="Edit" asp-route-id="@stage.Id">Изменить</a>
+                                    <button class="btn btn-light">
+                                        <a class="text-danger" asp-area="Planner" asp-controller="ContractStage" asp-action="Delete" asp-route-id="@stage.Id">Удалить</a>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body py-3">
@@ -120,6 +123,6 @@
 </div>
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">Назад к списку</a>
 </div>

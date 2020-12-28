@@ -2,40 +2,40 @@
 @model ContractAndProjectManager.Entities.Task
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Новая запись";
     var projectStage = ViewBag.ProjectStage as ProjectStage;
 }
 
-<h1>Create</h1>
+<h1>Новая запись</h1>
 
-<h4>Task</h4>
+<h4>Задача</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+                <label asp-for="Title" class="control-label">Название</label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <label asp-for="Description" class="control-label">Примечание</label>
+                <textarea asp-for="Description" class="form-control" rows="5"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateStart" class="control-label"></label>
-                <input asp-for="DateStart" class="form-control" />
+                <label asp-for="DateStart" class="control-label">Дата начала</label>
+                <input type="date" asp-for="DateStart" class="form-control" />
                 <span asp-validation-for="DateStart" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="DateDeadLine" class="control-label"></label>
-                <input asp-for="DateDeadLine" class="form-control" />
+                <label asp-for="DateDeadLine" class="control-label">Дата окончания</label>
+                <input type="date" asp-for="DateDeadLine" class="form-control" />
                 <span asp-validation-for="DateDeadLine" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ExecutorId" class="control-label"></label>
+                <label asp-for="ExecutorId" class="control-label">Исполнитель</label>
                 <select asp-for="ExecutorId" class ="form-control" asp-items="ViewBag.ExecutorId"></select>
             </div>
             <input hidden asp-for="StageId" value="@projectStage?.Id"/>
@@ -47,6 +47,6 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад к списку</a>
 </div>
 

@@ -81,7 +81,7 @@ namespace ContractAndProjectManager.Areas.Project.Controllers
                 return RedirectToProjectById((await _context.ProjectStages.FindAsync(task.StageId)).ProjectId);
             }
             ViewData["ExecutorId"] = new SelectList((await _context.ProjectStages.FindAsync(task.StageId)).Project.Team.Employees, "Id", "Name", task.ExecutorId);
-            ViewData["StageId"] = new SelectList(_context.ProjectStages, "Id", "Id", task.StageId);
+            ViewData["StageId"] = new SelectList(_context.ProjectStages, "Id", "Title", task.StageId);
             return View(task);
         }
 

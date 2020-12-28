@@ -11,7 +11,7 @@ using Task = System.Threading.Tasks.Task;
 
 namespace ContractAndProjectManager.Areas.Project.Controllers
 {
-    [Authorize(Roles = Role.Keys.TeamLead + "," + Role.Keys.Employee)]
+    [Authorize(Roles = Role.Keys.TeamLead + "," + Role.Keys.Employee + "," + Role.Keys.Planner)]
     [Area("Project")]
     public class ProjectController : Controller
     {
@@ -23,7 +23,7 @@ namespace ContractAndProjectManager.Areas.Project.Controllers
             _userService = userService;
             _context = context;
         }
-        
+
         [HttpPost]
         [Authorize(Roles = Role.Keys.TeamLead)]
         public async Task<IActionResult> SetStatus(int projectId, int statusId)
@@ -41,18 +41,22 @@ namespace ContractAndProjectManager.Areas.Project.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Edit", "Project", new {Area = "Project", id = project.Id});
+            return RedirectToAction("Edit", "Project", new { Area = "Project", id = project.Id });
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Projects.Where(x => x.TeamId == _userService.User.TeamId).ToListAsync());
+            var projects = await (_userService.User.RoleId == Role.Planner.Id
+                ? _context.Projects.Where(x =>
+                    (_userService.User as Entities.Planner).Contracts.Select(y => y.Id).Contains(x.ContractId))
+                : _context.Projects.Where(x => x.TeamId == _userService.User.TeamId)).ToListAsync();
+            return View(projects);
         }
 
         public async Task<IActionResult> Edit(int id)
         {
             var project = await _context.Projects.FindAsync(id);
-            if (project.TeamId != _userService.User.TeamId)
+            if (_userService.User.RoleId != Role.Planner.Id && project.TeamId != _userService.User.TeamId)
                 return NotFound();
 
             return View(project);

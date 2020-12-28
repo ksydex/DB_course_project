@@ -23,7 +23,8 @@
         Id = x.Id,
         Title = x.Name
     }, Model.Status?.StatusId ?? 0);
-
+    
+    
     var startDate = Model.Contract.Stages.Where(x => x.DateStart != null).Min(x => x.DateStart) ?? Model.DateStart ?? Model.Contract.DateStart ?? DateTime.Today;
     var endDate = Model.Contract.Stages.Where(x => x.DateDeadLine != null).Max(x => x.DateDeadLine) ?? Model.DateDeadLine ?? Model.Contract.DateDeadLine ?? DateTime.Today.Add(TimeSpan.FromDays(31));
 

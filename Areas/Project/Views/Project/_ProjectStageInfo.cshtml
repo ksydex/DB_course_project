@@ -15,7 +15,7 @@
 
 <div class="d-flex justify-content-between align-items-start">
     <div>
-        <a onclick="toggleInfoCard('@("cs"+Model.ContractStageId)')" class="text-sm text-warning" style="cursor: pointer">@Model.ContractStage.Title</a>
+        <a onclick="toggleInfoCard('@("cs" + Model.ContractStageId)')" class="text-sm text-warning" style="cursor: pointer">@Model.ContractStage.Title</a>
         <p class="text-sm text-primary"><i class="fas fa-angle-double-right"></i> Этап проекта</p>
     </div>
     <div class="d-flex">
@@ -84,9 +84,14 @@
                 <div>
                     @if (isTeamLead)
                     {
-                        <a asp-area="Project" asp-controller="Task" asp-action="Edit" asp-route-id="@task.Id" class="btn btn-sm btn-light">
-                            <i class="far fa-edit"></i>
-                        </a>
+                        <div class="d-flex">
+                            <a asp-area="Project" asp-controller="Task" asp-action="Edit" asp-route-id="@task.Id" class="btn btn-sm btn-light">
+                                <i class="far fa-edit"></i>
+                            </a>
+                            <a asp-area="Project" asp-controller="Task" asp-action="Delete" asp-route-id="@task.Id" class="btn btn-sm btn-light ml-2 text-danger">
+                                <i class="fas fa-times"></i>
+                            </a>
+                        </div>
                     }
                 </div>
             </div>

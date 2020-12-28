@@ -80,9 +80,10 @@ namespace ContractAndProjectManager.Areas.Project.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToProjectById(projectStage.ProjectId);
             }
-            ViewData["ContractStageId"] = new SelectList(_context.ContractStages, "Id", "Id", projectStage.ContractStageId);
-            ViewData["ExecutorId"] = new SelectList(_context.Employees, "Id", "Discriminator", projectStage.ExecutorId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Id", projectStage.ProjectId);
+
+            ViewData["ExecutorId"] = new SelectList(_context.Employees, "Id", "Name", projectStage.ExecutorId);
+            ViewData["ContractStageId"] = new SelectList(_context.ContractStages, "Id", "Title", projectStage.ContractStageId);
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Title", projectStage.ProjectId);
             return View(projectStage);
         }
 

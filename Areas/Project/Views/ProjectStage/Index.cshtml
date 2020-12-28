@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Название
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                Примечание
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateCreated)
+                Дата создания
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Project)
@@ -52,9 +52,9 @@
                 @Html.DisplayFor(modelItem => item.ContractStage.Id)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Подробнее</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
             </td>
         </tr>
 }

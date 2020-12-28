@@ -49,10 +49,10 @@
                         @item.Description
                     </p>
                 </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center" style="background: @item.Status.Status.Color;">
-                    <p class="text text-white m-0">@item.Status.Status.Name</p>
+                <li class="list-group-item d-flex justify-content-between align-items-center" style="background: @((item.Status?.Status ?? RequestStatus.Pending).Color);">
+                    <p class="text text-white m-0">@((item.Status?.Status ?? RequestStatus.Pending).Name)</p>
                     <div>
-                        @if (item.Status.StatusId == RequestStatus.Pending.Id)
+                        @if (item.Status?.StatusId == RequestStatus.Pending.Id)
                         {
                             <button class="btn btn-success mr-2">
                                 <a asp-area="Planner" asp-controller="Contract" asp-action="Create" asp-route-requestId="@item.Id">Добавить договор</a>

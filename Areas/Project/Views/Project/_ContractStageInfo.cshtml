@@ -62,9 +62,14 @@
                     <div>
                         @if (isTeamLead)
                         {
-                            <a asp-area="Project" asp-controller="ProjectStage" asp-action="Edit" asp-route-id="@stage.Id" class="btn btn-sm btn-light ml-2">
-                                <i class="far fa-edit"></i>
-                            </a>
+                            <div class="d-flex">
+                                <a asp-area="Project" asp-controller="ProjectStage" asp-action="Edit" asp-route-id="@stage.Id" class="btn btn-sm btn-light ml-2">
+                                    <i class="far fa-edit"></i>
+                                </a>
+                                <a asp-area="Project" asp-controller="ProjectStage" asp-action="Delete" asp-route-id="@stage.Id" class="btn btn-sm btn-light ml-2 text-danger">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </div>
                         }
                     </div>
                 </div>

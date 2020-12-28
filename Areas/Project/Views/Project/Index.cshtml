@@ -1,6 +1,13 @@
 ﻿@using ContractAndProjectManager.Helpers
 @using ContractAndProjectManager.Entities
+@using ContractAndProjectManager.Services
 @model List<ContractAndProjectManager.Entities.Project>
+@inject UserService UserService;
+
+@{
+    var isTeamLead = UserService.User.RoleId == Role.TeamLead.Id;
+    var isPlanner = UserService.User.RoleId == Role.Planner.Id;
+}
 
 <h3>Мои проекты</h3>
 
@@ -14,7 +21,13 @@
                         <h4>
                             @item.Name
                         </h4>
-                        <a class="btn btn-outline-info" asp-area="Project" asp-controller="Project" asp-action="Edit" asp-route-id="@item.Id">Подробнее</a>
+                        <div class="d-flex">
+                            @if (isPlanner)
+                            {
+                                <a class="btn btn-outline-secondary mr-2" asp-area="Planner" asp-controller="Project" asp-action="Edit" asp-route-id="@item.Id">Редактировать</a>
+                            }
+                            <a class="btn btn-outline-info" asp-area="Project" asp-controller="Project" asp-action="Edit" asp-route-id="@item.Id">Подробнее</a>
+                        </div>
                         </div>
                     <div class="grid-default grid-default-2 mb-2">
                         <p class="m-0">@DateHelpers.DateFormat(item.DateCreated)</p>
@@ -32,9 +45,18 @@
                     <p class="text text-white m-0">@item.Status?.Status.Name</p>
                     @if (item.Contract != null)
                     {
-                        <button class="btn btn-light">
-                            <a class="text-primary" asp-area="TeamLead" asp-controller="Home" asp-action="Contract" asp-route-id="@item.Contract.Id">К договору</a>
-                        </button>
+                        @if (isTeamLead)
+                        {
+                            <button class="btn btn-light">
+                                <a class="text-primary" asp-area="TeamLead" asp-controller="Home" asp-action="Contract" asp-route-id="@item.Contract.Id">К договору</a>
+                            </button>
+                        }
+                        @if (isPlanner)
+                        {
+                            <button class="btn btn-light">
+                                <a class="text-primary" asp-area="Planner" asp-controller="Contract" asp-action="Details" asp-route-id="@item.Contract.Id">К договору</a>
+                            </button>
+                        }
                     }
                 </li>
             </ul>

@@ -1,23 +1,23 @@
 @model ContractAndProjectManager.Entities.Request
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробнее";
 }
 
-<h1>Details</h1>
+<h1>Подробнее</h1>
 
 <div>
     <h4>Request</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+            Название
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+            Примечание
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
@@ -29,13 +29,13 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateDeadLine)
+            Дата окончания
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DateDeadLine)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreated)
+            Дата создания
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.DateCreated)
@@ -43,6 +43,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">Назад к списку</a>
 </div>

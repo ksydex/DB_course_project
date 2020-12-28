@@ -7,7 +7,7 @@
 @inject ApplicationContext DbContext;
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирование";
     var leadId = Model.Lead?.Id ?? 0;
     var teamLeadSelectList = SelectListHelpers.CreateSelectList(DbContext.TeamLeads.Where(x => x.TeamId == null || x.Id == leadId), x => new SelectListModel
     {
@@ -22,7 +22,7 @@
     });
 }
 
-<h1>Edit</h1>
+<h1>Редактирование</h1>
 
 <h4>Team</h4>
 <hr/>
@@ -32,7 +32,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id"/>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+                <label asp-for="Title" class="control-label">Название</label>
                 <input asp-for="Title" class="form-control"/>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
@@ -87,5 +87,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад к списку</a>
 </div>

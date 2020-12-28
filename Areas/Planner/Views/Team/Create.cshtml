@@ -6,7 +6,7 @@
 @inject ApplicationContext DbContext;
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Новая запись";
     var teamLeadSelectList = SelectListHelpers.CreateSelectList(DbContext.TeamLeads.Where(x => x.TeamId == null), x => new SelectListModel
     {
         Id = x.Id,
@@ -16,16 +16,16 @@
     var isDisabled = teamLeadSelectList.IsNullOrEmpty();
 }
 
-<h1>Create</h1>
+<h1>Новая запись</h1>
 
 <h4>Team</h4>
 <hr/>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+                <label asp-for="Title" class="control-label">Название</label>
                 <input asp-for="Title" class="form-control"/>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
@@ -48,5 +48,5 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад к списку</a>
 </div>

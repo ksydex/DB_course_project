@@ -22,9 +22,7 @@
     // FROM "ProjectStages"
     // WHERE "ProjectId" = a."Id")) AS "TotalHours",
     //
-    // (SELECT COUNT(*)
-    // FROM "ContractStages"
-    // WHERE "ProjectId" = a."Id") AS "StagesCount",
+    // COUNT(*) AS "StagesCount",
     //
     // (SELECT COUNT(*)
     // FROM "Users"
@@ -35,24 +33,21 @@
     // (SELECT COUNT(*) FROM get_tasks(a."Id") WHERE "statusId" = 6) AS "DoneTasksCount"
     // FROM "Projects" a
     // LEFT JOIN "ProjectStages" b ON a."Id" = b."ProjectId"
-    // LEFT JOIN "Tasks" c ON c."StageId" IN
-    // (SELECT b."Id")
-    // GROUP BY a."Id",
-    // b."ProjectId";
+    // GROUP BY a."Id";
 
 
     // SQL FUNCTION
-    //     create or replace function get_tasks (
+    // CREATE OR REPLACE FUNCTION get_tasks (
     //   projectId integer
     // ) 
-    // 	returns table (
+    // 	RETURNS TABLE (
     // 		"id" int,
     // 		"statusId" int
     // 	) 
-    // 	language plpgsql
-    // as $$
-    // begin
-    // 	return query
+    // 	LANGUAGE plpgsql
+    // AS $$
+    // BEGIN
+    // 	RETURN QUERY
     // 	   WITH n AS
     // 			(
     // 			   SELECT *,
