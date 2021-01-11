@@ -19,7 +19,8 @@ namespace ContractAndProjectManager.Services
         private readonly PasswordService _passwordService;
         private readonly HttpContext _httpContext;
 
-        public AuthService(ApplicationContext db, PasswordService passwordService, IHttpContextAccessor httpContextAccessor)
+        public AuthService(ApplicationContext db, PasswordService passwordService,
+            IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
             _passwordService = passwordService;
@@ -30,14 +31,14 @@ namespace ContractAndProjectManager.Services
         {
             var user = await VerifyUser(model.Email, model.Password);
             if (user == null) return null;
-      
+
             var claimsIdentity = GenerateClaimsIdentity(user);
             var authProperties = new AuthenticationProperties
             {
                 AllowRefresh = true,
                 ExpiresUtc = DateTimeOffset.Now.AddDays(7),
             };
-            
+
             await _httpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
@@ -50,7 +51,7 @@ namespace ContractAndProjectManager.Services
         {
             await _httpContext.SignOutAsync();
         }
-        
+
         private async Task<User> VerifyUser(string email, string password)
         {
             email = email.ToLower();
@@ -58,7 +59,7 @@ namespace ContractAndProjectManager.Services
             var user = await _db.Users.SingleOrDefaultAsync(u => u.Email == email);
             if (user == null) return null;
 
-            
+
             var passwordVerify = _passwordService.VerifyHashedPassword(user, user.Password, password);
             return passwordVerify == PasswordVerificationResult.Failed ? null : user;
         }
